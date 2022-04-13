@@ -1,5 +1,5 @@
 <script>
-  import { switchLanguage, txt } from '../language.js'
+  import { selectedLanguage, switchLanguage, txt } from '../language.js'
   import Drawer, { AppContent, Content, Header, Subtitle } from '@smui/drawer'
   import Button, { Label } from '@smui/button'
   import List, { Item, Text } from '@smui/list'
@@ -59,9 +59,9 @@
         </span>
       </div>
       <div class="flex-none gap-2">
+        <!-- DARK MODE SWITCH-->
         <div class="form-control">
           <label class="swap swap-rotate">
-            <!-- this hidden checkbox controls the state -->
             <input
               type="checkbox"
               checked={darkMode}
@@ -75,6 +75,22 @@
             <span class="material-icons mr-2 swap-on fill-current"> light_mode </span>
             <!-- moon icon -->
             <span class="material-icons mr-2 swap-off fill-current"> dark_mode </span>
+          </label>
+        </div>
+        <!-- LANGUAGE SWITCH-->
+        <div class="form-control">
+          <label class="swap swap-rotate">
+            <input
+              type="checkbox"
+              checked={selectedLanguage == 'ar'}
+              on:click={() => {
+                switchLanguage()
+              }}
+            />
+            <!-- arabic -->
+            <img width="25px" class="mr-2 swap-off" src="/assets/flags/sa.svg" alt="ar" />
+            <!-- english -->
+            <img width="25px" class="mr-2 swap-on" src="/assets/flags/gb.svg" alt="ar" />
           </label>
         </div>
         <div class="form-control">

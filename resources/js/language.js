@@ -1,18 +1,18 @@
-export let s = localStorage.getItem('language')
-if (!s) {
+export let selectedLanguage = localStorage.getItem('language')
+if (!selectedLanguage) {
   localStorage.setItem('language', 'en')
-  s = localStorage.getItem('language')
+  selectedLanguage = localStorage.getItem('language')
 }
 
 export const switchLanguage = () => {
-  if (s === 'ar') s = 'en'
-  else s = 'ar'
-  localStorage.setItem('language', s)
+  if (selectedLanguage === 'ar') selectedLanguage = 'en'
+  else selectedLanguage = 'ar'
+  localStorage.setItem('language', selectedLanguage)
   document.location.reload()
 }
 
 export const txt = (text) => {
-  return lan[s][text]
+  return lan[selectedLanguage][text]
 }
 
 export let lan = {
