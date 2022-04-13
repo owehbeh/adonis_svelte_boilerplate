@@ -34,6 +34,8 @@ export let lan = {
     'Email': 'Email',
     'Password': 'Password',
     'Login to your account': 'Login to your account',
+    'Organizations': 'Organizations',
+    'Usage': 'Usage',
   },
   ar: {
     'Hello,': 'مرحبا،',
@@ -53,5 +55,7 @@ export let lan = {
     'Email': 'بريد إلكتروني',
     'Password': 'كلمة المرور',
     'Login to your account': 'تسجيل الدخول إلى حسابك',
+    'Organizations': 'المنظمات',
+    'Usage': 'إستعمال',
   },
 }
