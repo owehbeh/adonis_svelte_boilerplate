@@ -2676,6 +2676,10 @@ body[dir="rtl"] .checkbox:checked,
   border-right-width: 1px;
 }
 
+.border-l {
+  border-left-width: 1px;
+}
+
 .border-neutral-focus {
   --tw-border-opacity: 1;
   border-color: hsl(var(--nf, var(--n)) / var(--tw-border-opacity));

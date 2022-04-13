@@ -8,9 +8,6 @@
 
 <MainLayout myData={DATA}>
   <div style="margin:20px">
-    <h1>Sup {DATA.user.name}!</h1>
-    <h1>THIS IS REQUESTS</h1>
-    <br />
     <div class="overflow-x-auto">
       <table class="table table-zebra w-full">
         <!-- head -->

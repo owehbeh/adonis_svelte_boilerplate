@@ -115,9 +115,9 @@
     <label for="my-drawer" class="drawer-overlay" />
 
     <div
-      class="flex flex-col w-64 h-screen px-4 py-8 border-r {darkMode
-        ? 'border-neutral-focus'
-        : 'border-base-300'} bg-base-100"
+      class="flex flex-col w-64 h-screen px-4 py-8 {selectedLanguage == 'ar'
+        ? 'border-l'
+        : 'border-r'} {darkMode ? 'border-neutral-focus' : 'border-base-300'} bg-base-100"
     >
       <h2
         class="text-3xl font-semibold ml-4"

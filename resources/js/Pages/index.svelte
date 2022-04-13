@@ -8,7 +8,6 @@
 
 <MainLayout myData={DATA}>
   <div style="margin:20px">
-    <h1>Sup {DATA.user.name}!</h1>
-    <h1>THIS IS HOME</h1>
+    <h1>Welcome Home</h1>
   </div>
 </MainLayout>
