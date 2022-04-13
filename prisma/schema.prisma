@@ -1,0 +1,158 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String        @id @unique @default(cuid())
+  name            String
+  email           String        @unique
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  validated       Boolean       @default(false)
+  password        String
+  rememberMeToken String?
+  superAdmin      Boolean       @default(false)
+  notes           Note[]
+  organization    Organization? @relation(fields: [organizationId], references: [id])
+  organizationId  String?
+  Request         Request[]
+  Customer        Customer[]
+  Supplier        Supplier[]
+  Item            Item[]
+}
+
+model Note {
+  id    String @id @unique @default(cuid())
+  title String
+  body  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId  String
+  Request Request[]
+  Item    Item[]
+}
+
+model Request {
+  id             String       @id @unique @default(cuid())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  customer       Customer     @relation(fields: [customerId], references: [id])
+  createdBy      User         @relation(fields: [userId], references: [id])
+  note           Note?        @relation(fields: [noteId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  customerId     String
+  userId         String
+  noteId         String?
+  organizationId String
+}
+
+model Customer {
+  id             String       @id @unique @default(cuid())
+  name           String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  createdBy      User         @relation(fields: [userId], references: [id])
+  warehouses     Warehouse[]
+  Request        Request[]
+  organizationId String
+  userId         String
+}
+
+model Supplier {
+  id             String       @id @unique @default(cuid())
+  name           String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  createdBy      User         @relation(fields: [userId], references: [id])
+  warehouses     Warehouse[]
+  organizationId String
+  userId         String
+  Item           Item[]
+}
+
+model Organization {
+  id        String     @id @unique @default(cuid())
+  name      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  slug      String     @unique
+  User      User[]
+  Request   Request[]
+  Customer  Customer[]
+  Supplier  Supplier[]
+  Role      Role[]
+}
+
+model Item {
+  id         String    @id @unique @default(cuid())
+  name       String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  supplier   Supplier? @relation(fields: [supplierId], references: [id])
+  note       Note?     @relation(fields: [noteId], references: [id])
+  createdBy  User      @relation(fields: [userId], references: [id])
+  price      Decimal?
+  oldPrice   Decimal?
+  supplierId String?
+  noteId     String?
+  userId     String
+}
+
+model Role {
+  id             String       @id @unique @default(cuid())
+  name           String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  // permissions    Permission[]
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+}
+
+model Address {
+  id              String     @id @unique @default(cuid())
+  name            String
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  description     String?
+  country         String?
+  city            String?
+  street          String?
+  moreInformation String?
+  Warehouse       Warehouse? @relation(fields: [warehouseId], references: [id])
+  warehouseId     String?
+}
+
+model Warehouse {
+  id         String    @id @unique @default(cuid())
+  name       String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  locations  Address[]
+  Customer   Customer? @relation(fields: [customerId], references: [id])
+  customerId String?
+  Supplier   Supplier? @relation(fields: [supplierId], references: [id])
+  supplierId String?
+}
+
+enum Permission {
+  Create_User
+  Create_Request
+  Create_Invoice
+  Create_Order
+  Create_Role
+  Create_Customer
+  Create_Supplier
+}

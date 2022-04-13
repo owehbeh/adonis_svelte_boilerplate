@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" id="main_page">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="/favicon.ico">
+  <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+  <!-- Material Icons -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  />
+  <!-- Roboto -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700"
+  />
+  <!-- Roboto Mono -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto+Mono"
+  />
+
+  {{--  TAILWIND  --}}
+  <link rel="stylesheet" href="/output.css"/>
+
+  {{--  HELPERS JS  --}}
+  <script src="/js/helpers.js"></script>
+
+  @entryPointStyles('app')
+
+  <title>DTD CRM</title>
+  <!-- Svelte -->
+  {{--  <script src="{{ asset('assets/app.js') }}" defer></script>  --}}
+</head>
+<body>
+  @entryPointScripts('app')
+  @inertia()
+</body>
+</html>
+
