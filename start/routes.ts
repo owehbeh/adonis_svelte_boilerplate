@@ -39,9 +39,7 @@ Route.group(() => {
   .middleware('auth')
 
 Route.group(() => {
-  Route.get('/access', 'AdminController.passwordView')
-  Route.post('/access', 'AdminController.password')
-  Route.get('/organization', 'AdminController.organizationView')
+  Route.get('/organizations', 'AdminController.organizationView')
 })
   .prefix('admin/')
   .middleware('auth')
