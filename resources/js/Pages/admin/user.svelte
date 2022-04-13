@@ -8,7 +8,7 @@
 
 <MainLayout myData={DATA}>
   <div style="margin:20px">
-    <h1>Organizations</h1>
+    <h1>Users</h1>
     <br />
     <div class="overflow-x-auto">
       <table class="table table-zebra w-full">
@@ -16,17 +16,19 @@
         <thead>
           <tr>
             <th>Name</th>
-            <th>Slug</th>
+            <th>Email</th>
+            <th>Organization</th>
             <th>Created At</th>
           </tr>
         </thead>
         <tbody>
-          {#each $page.props.organizations as org}
+          {#each $page.props.users as user}
             <tr>
-              <td>{org.name}</td>
-              <td>{org.slug}</td>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>{user.organization.name}</td>
               <td>
-                {parseDbDate(org.createdAt)}
+                {parseDbDate(user.createdAt)}
               </td>
             </tr>
           {/each}

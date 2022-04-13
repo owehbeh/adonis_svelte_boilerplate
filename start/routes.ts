@@ -40,6 +40,7 @@ Route.group(() => {
 
 Route.group(() => {
   Route.get('/organizations', 'AdminController.organizationView')
+  Route.get('/users', 'AdminController.usersView')
 })
   .prefix('admin/')
   .middleware('auth')

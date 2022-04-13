@@ -11,4 +11,12 @@ export default class AdminController {
       return FeedbackHelper.handleError(ctx, error)
     }
   }
+  public async usersView(ctx: HttpContextContract) {
+    try {
+      let users = await prisma.user.findMany({ include: { organization: true } })
+      return ctx.inertia.render('admin/user', { users })
+    } catch (error) {
+      return FeedbackHelper.handleError(ctx, error)
+    }
+  }
 }

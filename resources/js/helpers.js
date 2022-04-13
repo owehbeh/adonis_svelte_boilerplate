@@ -8,3 +8,9 @@ export const decodeProps = (props) => {
   const decodedJSON = JSON.parse(decoded)
   return decodedJSON
 }
+
+export const parseDbDate = (dateString) => {
+  const finalString =
+    new Date(dateString).toLocaleDateString() + ' - ' + new Date(dateString).toLocaleTimeString()
+  return finalString
+}
