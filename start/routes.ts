@@ -20,11 +20,12 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 import Ws from 'App/Services/Ws'
+import { PermissionsEnum } from 'Contracts/enums'
 // Ws.boot()
 
 Route.get('/', async ({ inertia }) => {
   return inertia.render('index')
-}).middleware('auth')
+}).middleware(['auth', `canDo:${PermissionsEnum.VIEW_DASHBOARD}`])
 
 Route.group(() => {
   Route.post('/login', 'UsersController.login')
@@ -43,7 +44,7 @@ Route.group(() => {
   Route.get('/users', 'AdminController.usersView')
 })
   .prefix('admin/')
-  .middleware('auth')
+  .middleware(['auth', 'superAdmin'])
 
 Route.get('/pizza', async ({ inertia }) => {
   return inertia.render('pizza', { text: 'Pizza' })

@@ -1,5 +1,7 @@
 import { prisma, PrismaSeederBase } from '@ioc:Adonis/Addons/Prisma'
 import Hash from '@ioc:Adonis/Core/Hash'
+import { Role } from '@prisma/client'
+import { AppRoles } from 'App/Helpers/PermissionHelper'
 
 export default class UserSeeder extends PrismaSeederBase {
   public static developmentOnly = false
@@ -22,6 +24,32 @@ export default class UserSeeder extends PrismaSeederBase {
       },
     })
 
+    let appRoles = AppRoles(org.id)
+    for (let i = 0; i < appRoles.length; i++) {
+      const role: Role = appRoles[i]
+      await prisma.role.upsert({
+        where: {
+          name: role.name,
+        },
+        update: {
+          id: role.id,
+          name: role.name,
+          createdAt: role.createdAt,
+          updatedAt: role.updatedAt,
+          organizationId: role.organizationId,
+          permissions: role.permissions!,
+        },
+        create: {
+          id: role.id,
+          name: role.name,
+          createdAt: role.createdAt,
+          updatedAt: role.updatedAt,
+          organizationId: role.organizationId,
+          permissions: role.permissions!,
+        },
+      })
+    }
+
     await prisma.user.upsert({
       where: {
         email: email,
@@ -31,6 +59,7 @@ export default class UserSeeder extends PrismaSeederBase {
         password: hashedPassword,
         organizationId: org.id,
         name: 'Omar',
+        roleId: '1',
       },
       create: {
         email,

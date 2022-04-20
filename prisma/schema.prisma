@@ -23,10 +23,12 @@ model User {
   notes           Note[]
   organization    Organization? @relation(fields: [organizationId], references: [id])
   organizationId  String?
-  Request         Request[]
-  Customer        Customer[]
-  Supplier        Supplier[]
-  Item            Item[]
+  request         Request[]
+  customer        Customer[]
+  supplier        Supplier[]
+  item            Item[]
+  role            Role?         @relation(fields: [roleId], references: [id])
+  roleId          String?
 }
 
 model Note {
@@ -39,8 +41,8 @@ model Note {
 
   user    User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId  String
-  Request Request[]
-  Item    Item[]
+  request Request[]
+  item    Item[]
 }
 
 model Request {
@@ -80,7 +82,7 @@ model Supplier {
   warehouses     Warehouse[]
   organizationId String
   userId         String
-  Item           Item[]
+  item           Item[]
 }
 
 model Organization {
@@ -89,11 +91,11 @@ model Organization {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   slug      String     @unique
-  User      User[]
-  Request   Request[]
-  Customer  Customer[]
-  Supplier  Supplier[]
-  Role      Role[]
+  user      User[]
+  request   Request[]
+  customer  Customer[]
+  supplier  Supplier[]
+  role      Role[]
 }
 
 model Item {
@@ -113,12 +115,13 @@ model Item {
 
 model Role {
   id             String       @id @unique @default(cuid())
-  name           String
+  name           String       @unique
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
-  // permissions    Permission[]
+  permissions    Json         @default("[]")
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
+  User           User[]
 }
 
 model Address {
@@ -141,18 +144,8 @@ model Warehouse {
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   locations  Address[]
-  Customer   Customer? @relation(fields: [customerId], references: [id])
+  customer   Customer? @relation(fields: [customerId], references: [id])
   customerId String?
-  Supplier   Supplier? @relation(fields: [supplierId], references: [id])
+  supplier   Supplier? @relation(fields: [supplierId], references: [id])
   supplierId String?
-}
-
-enum Permission {
-  Create_User
-  Create_Request
-  Create_Invoice
-  Create_Order
-  Create_Role
-  Create_Customer
-  Create_Supplier
 }

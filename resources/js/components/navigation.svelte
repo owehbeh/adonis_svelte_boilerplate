@@ -88,9 +88,9 @@
               }}
             />
             <!-- arabic -->
-            <img width="25px" class="mr-2 swap-off" src="/assets/flags/sa.svg" alt="ar" />
+            <img width="25px" class="mr-2 swap-off" src="/flags/sa.svg" alt="ar" />
             <!-- english -->
-            <img width="25px" class="mr-2 swap-on" src="/assets/flags/gb.svg" alt="ar" />
+            <img width="25px" class="mr-2 swap-on" src="/flags/gb.svg" alt="ar" />
           </label>
         </div>
         <div class="form-control">
@@ -119,7 +119,7 @@
         ? 'border-l'
         : 'border-r'} {darkMode ? 'border-neutral-focus' : 'border-base-300'} bg-base-100"
     >
-      <h2 class="text-3xl font-semibold ml-4">DTD CRM</h2>
+      <h2 class="text-3xl font-semibold ml-4">{myData.user.organization.name}</h2>
       <div class="divider mb-0 mt-6" />
 
       <div class="flex flex-col justify-between flex-1 mt-6 space-y-6">
