@@ -2,7 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import FeedbackHelper from 'App/Helpers/FeedbackHelper'
 import { prisma } from '@ioc:Adonis/Addons/Prisma'
 
-export default class AdminController {
+export default class SuperAdminController {
   public async organizationView(ctx: HttpContextContract) {
     try {
       let organizations = await prisma.organization.findMany()

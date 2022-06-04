@@ -4,7 +4,7 @@ import { hasPermission } from 'App/Helpers/PermissionHelper'
 export default class Permission {
   public async handle(ctx: HttpContextContract, next: () => Promise<void>, permissions: string[]) {
     // code for middleware goes here. ABOVE THE NEXT CALL
-    const canDo = await hasPermission(ctx.auth.user!.id, permissions)
+    const canDo = await hasPermission(ctx.auth.user!, permissions)
     if (!canDo) {
       // FIXME RENDER A PAGE INSTEAD OF REDIRECT BACK
       // CAUSING TOO MANY REDIRECTS ERROR

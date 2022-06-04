@@ -78,6 +78,10 @@ export default class AuthMiddleware {
         where: { id: auth.user.organizationId },
       })
       auth.user['organization'] = userOrg
+      const role = await prisma.role.findUnique({
+        where: { id: auth.user!.roleId! },
+      })
+      auth.user['role'] = role
     }
     // INCLUDE RELATIONS END
     await next()

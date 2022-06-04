@@ -23,15 +23,24 @@ import Ws from 'App/Services/Ws'
 import { PermissionsEnum } from 'Contracts/enums'
 // Ws.boot()
 
+/* ---------------------------------- HOME ---------------------------------- */
 Route.get('/', async ({ inertia }) => {
   return inertia.render('index')
 }).middleware(['auth', `canDo:${PermissionsEnum.VIEW_DASHBOARD}`])
 
+/* ---------------------------------- AUTH ---------------------------------- */
 Route.group(() => {
   Route.post('/login', 'UsersController.login')
   Route.get('/login', 'UsersController.loginView')
   Route.post('/logout', 'UsersController.logout')
 })
+
+/* --------------------------- ORGANIZATION ADMIN --------------------------- */
+Route.group(() => {
+  Route.get('/organizations', 'AdminController.organizationView')
+})
+  .prefix('admin/')
+  .middleware(['auth'])
 
 Route.group(() => {
   Route.get('/', 'RequestsController.indexView')
@@ -39,13 +48,15 @@ Route.group(() => {
   .prefix('requests/')
   .middleware('auth')
 
+/* ------------------------------- SUPER ADMIN ------------------------------ */
 Route.group(() => {
-  Route.get('/organizations', 'AdminController.organizationView')
-  Route.get('/users', 'AdminController.usersView')
+  Route.get('/organizations', 'SuperAdminController.organizationView')
+  Route.get('/users', 'SuperAdminController.usersView')
 })
-  .prefix('admin/')
+  .prefix('super/')
   .middleware(['auth', 'superAdmin'])
 
+/* --------------------------------- TESTING -------------------------------- */
 Route.get('/pizza', async ({ inertia }) => {
   return inertia.render('pizza', { text: 'Pizza' })
 })

@@ -1,25 +1,10 @@
-import { prisma } from '@ioc:Adonis/Addons/Prisma'
 import { Role } from '@prisma/client'
 import { PermissionsEnum } from 'Contracts/enums'
 
-export const hasPermission = async (userId: string, permissions: string[]) => {
+export const hasPermission = (user: any, permissions: string[]) => {
   let canDo = false
-  // Fetch user
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    rejectOnNotFound: true,
-    include: {
-      organization: true,
-      customer: true,
-      item: true,
-      request: true,
-      supplier: true,
-      notes: true,
-      role: true,
-    },
-  })
   // Check superAdmin
-  // if (user.superAdmin) return true
+  if (user.superAdmin) return true
   // Check role permissions
   const userPermissions = user.role?.permissions as string[]
   permissions.forEach((permissionToCheck) => {
