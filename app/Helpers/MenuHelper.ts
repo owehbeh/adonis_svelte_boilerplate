@@ -1,5 +1,5 @@
-import { PermissionsEnum } from 'Contracts/enums'
-import { hasPermission } from './PermissionHelper'
+import { hasPermission } from './Permission/PermissionHelper'
+import * as permissions from '../Helpers/Permission/permissions.json'
 
 export const getUserMenu = (user?: any): SideMenu[] => {
   let sideMenuList: SideMenu[] = []
@@ -75,42 +75,42 @@ export const getUserMenu = (user?: any): SideMenu[] => {
   let topMenuItemsExist = false
   let topMenuSeparatorExist = false
 
-  if (hasPermission(user, [PermissionsEnum.VIEW_DASHBOARD])) {
+  if (hasPermission(user, [permissions.VIEW_DASHBOARD])) {
     sideMenuList.push(dashboardItem)
     topMenuItemsExist = true
   }
-  if (hasPermission(user, [PermissionsEnum.VIEW_REQUESTS])) {
+  if (hasPermission(user, [permissions.VIEW_REQUESTS])) {
     sideMenuList.push(requestsItem)
     topMenuItemsExist = true
   }
-  if (hasPermission(user, [PermissionsEnum.VIEW_ORDERS])) {
+  if (hasPermission(user, [permissions.VIEW_ORDERS])) {
     sideMenuList.push(ordersItem)
     topMenuItemsExist = true
   }
-  if (hasPermission(user, [PermissionsEnum.VIEW_DELIVERIES])) {
+  if (hasPermission(user, [permissions.VIEW_DELIVERIES])) {
     sideMenuList.push(deliveryItem)
     topMenuItemsExist = true
   }
-  if (hasPermission(user, [PermissionsEnum.VIEW_TRACKING])) {
+  if (hasPermission(user, [permissions.VIEW_TRACKING])) {
     sideMenuList.push(trackingItem)
     topMenuItemsExist = true
   }
-  if (hasPermission(user, [PermissionsEnum.VIEW_CUSTOMERS])) {
+  if (hasPermission(user, [permissions.VIEW_CUSTOMERS])) {
     if (!topMenuSeparatorExist) sideMenuList.push({ name: 'separator' })
     topMenuSeparatorExist = true
     sideMenuList.push(customersItem)
   }
-  if (hasPermission(user, [PermissionsEnum.VIEW_SUPPLIERS])) {
+  if (hasPermission(user, [permissions.VIEW_SUPPLIERS])) {
     if (!topMenuSeparatorExist) sideMenuList.push({ name: 'separator' })
     topMenuSeparatorExist = true
     sideMenuList.push(suppliersItem)
   }
-  if (hasPermission(user, [PermissionsEnum.VIEW_USERS])) {
+  if (hasPermission(user, [permissions.VIEW_USERS])) {
     if (!topMenuSeparatorExist) sideMenuList.push({ name: 'separator' })
     topMenuSeparatorExist = true
     sideMenuList.push(usersItem)
   }
-  if (hasPermission(user, [PermissionsEnum.VIEW_SETTINGS])) {
+  if (hasPermission(user, [permissions.VIEW_SETTINGS])) {
     if (!topMenuSeparatorExist) sideMenuList.push({ name: 'separator' })
     topMenuSeparatorExist = true
     sideMenuList.push(settingsItem)

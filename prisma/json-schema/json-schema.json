@@ -1,0 +1,521 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "validated": {
+          "type": "boolean",
+          "default": false
+        },
+        "password": {
+          "type": "string"
+        },
+        "rememberMeToken": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "superAdmin": {
+          "type": "boolean",
+          "default": false
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Note"
+          }
+        },
+        "organization": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Organization"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "request": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Request"
+          }
+        },
+        "customer": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Customer"
+          }
+        },
+        "supplier": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Supplier"
+          }
+        },
+        "item": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Item"
+          }
+        },
+        "role": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Role"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "Note": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "user": {
+          "$ref": "#/definitions/User"
+        },
+        "request": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Request"
+          }
+        },
+        "item": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Item"
+          }
+        }
+      }
+    },
+    "Request": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "customer": {
+          "$ref": "#/definitions/Customer"
+        },
+        "createdBy": {
+          "$ref": "#/definitions/User"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Note"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "organization": {
+          "$ref": "#/definitions/Organization"
+        }
+      }
+    },
+    "Customer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "organization": {
+          "$ref": "#/definitions/Organization"
+        },
+        "createdBy": {
+          "$ref": "#/definitions/User"
+        },
+        "warehouses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Warehouse"
+          }
+        },
+        "Request": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Request"
+          }
+        }
+      }
+    },
+    "Supplier": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "organization": {
+          "$ref": "#/definitions/Organization"
+        },
+        "createdBy": {
+          "$ref": "#/definitions/User"
+        },
+        "warehouses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Warehouse"
+          }
+        },
+        "item": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Item"
+          }
+        }
+      }
+    },
+    "Organization": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "user": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/User"
+          }
+        },
+        "request": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Request"
+          }
+        },
+        "customer": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Customer"
+          }
+        },
+        "supplier": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Supplier"
+          }
+        },
+        "role": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Role"
+          }
+        }
+      }
+    },
+    "Item": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "supplier": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Supplier"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "note": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Note"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdBy": {
+          "$ref": "#/definitions/User"
+        },
+        "price": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "oldPrice": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "Role": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "permissions": {
+          "type": [
+            "number",
+            "string",
+            "boolean",
+            "object",
+            "array",
+            "null"
+          ]
+        },
+        "organization": {
+          "$ref": "#/definitions/Organization"
+        },
+        "User": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/User"
+          }
+        }
+      }
+    },
+    "Address": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "country": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "city": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "street": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "moreInformation": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "Warehouse": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Warehouse"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "Warehouse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "locations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Address"
+          }
+        },
+        "customer": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Customer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "supplier": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Supplier"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "user": {
+      "$ref": "#/definitions/User"
+    },
+    "note": {
+      "$ref": "#/definitions/Note"
+    },
+    "request": {
+      "$ref": "#/definitions/Request"
+    },
+    "customer": {
+      "$ref": "#/definitions/Customer"
+    },
+    "supplier": {
+      "$ref": "#/definitions/Supplier"
+    },
+    "organization": {
+      "$ref": "#/definitions/Organization"
+    },
+    "item": {
+      "$ref": "#/definitions/Item"
+    },
+    "role": {
+      "$ref": "#/definitions/Role"
+    },
+    "address": {
+      "$ref": "#/definitions/Address"
+    },
+    "warehouse": {
+      "$ref": "#/definitions/Warehouse"
+    }
+  }
+}

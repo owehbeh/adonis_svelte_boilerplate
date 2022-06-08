@@ -20,13 +20,14 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 import Ws from 'App/Services/Ws'
-import { PermissionsEnum } from 'Contracts/enums'
+import * as permissions from '../app/Helpers/Permission/permissions.json'
+
 // Ws.boot()
 
 /* ---------------------------------- HOME ---------------------------------- */
 Route.get('/', async ({ inertia }) => {
   return inertia.render('index')
-}).middleware(['auth', `canDo:${PermissionsEnum.VIEW_DASHBOARD}`])
+}).middleware(['auth', `canDo:${permissions.VIEW_DASHBOARD}`])
 
 /* ---------------------------------- AUTH ---------------------------------- */
 Route.group(() => {
@@ -48,6 +49,18 @@ Route.group(() => {
   .prefix('requests/')
   .middleware('auth')
 
+/* -------------------------------- WAREHOUSE ------------------------------- */
+Route.group(() => {
+  Route.get('/', 'RenameMeWarehousesController.warehouseListView').middleware([
+    `canDo:${permissions.VIEW_WAREHOUSES}`,
+  ])
+  Route.get('/:id', 'RenameMeWarehousesController.warehouseSingleView')
+  Route.get('/:id?', 'RenameMeWarehousesController.warehouseEditAddView')
+  Route.post('/:id?', 'RenameMeWarehousesController.warehouseEditAdd')
+  Route.delete('/:id?', 'RenameMeWarehousesController.warehouseDelete')
+})
+  .prefix('warehouses/')
+  .middleware(['auth'])
 /* ------------------------------- SUPER ADMIN ------------------------------ */
 Route.group(() => {
   Route.get('/organizations', 'SuperAdminController.organizationView')
@@ -55,6 +68,12 @@ Route.group(() => {
 })
   .prefix('super/')
   .middleware(['auth', 'superAdmin'])
+
+Route.group(() => {
+  Route.get('/', 'RenameMeUsersController.userListView')
+})
+  .prefix('users/')
+  .middleware(['auth'])
 
 /* --------------------------------- TESTING -------------------------------- */
 Route.get('/pizza', async ({ inertia }) => {

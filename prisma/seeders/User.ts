@@ -1,7 +1,7 @@
 import { prisma, PrismaSeederBase } from '@ioc:Adonis/Addons/Prisma'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { Role } from '@prisma/client'
-import { AppRoles } from 'App/Helpers/PermissionHelper'
+import { AppRoles } from 'App/Helpers/Permission/PermissionHelper'
 
 export default class UserSeeder extends PrismaSeederBase {
   public static developmentOnly = false

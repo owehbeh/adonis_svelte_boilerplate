@@ -13,7 +13,7 @@ export default class SuperAdminController {
   }
   public async usersView(ctx: HttpContextContract) {
     try {
-      let users = await prisma.user.findMany({ include: { organization: true } })
+      let users = await prisma.user.findMany({ include: { organization: true, supplier: true } })
       return ctx.inertia.render('admin/user', { users })
     } catch (error) {
       return FeedbackHelper.handleError(ctx, error)

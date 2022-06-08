@@ -1,5 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { hasPermission } from 'App/Helpers/PermissionHelper'
+import { hasPermission } from 'App/Helpers/Permission/PermissionHelper'
 
 export default class Permission {
   public async handle(ctx: HttpContextContract, next: () => Promise<void>, permissions: string[]) {

@@ -1,5 +1,17 @@
 {
   "commands": {
+    "generate:crud": {
+      "settings": {
+        "loadApp": false,
+        "stayAlive": false
+      },
+      "commandPath": "./commands/GenerateCrud/GenerateCrud",
+      "commandName": "generate:crud",
+      "description": "Generate a controller and views for models",
+      "args": [],
+      "aliases": [],
+      "flags": []
+    },
     "dump:rcfile": {
       "settings": {},
       "commandPath": "@adonisjs/core/build/commands/DumpRc",

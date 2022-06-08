@@ -1,7 +1,5 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-
 import { Exception } from '@adonisjs/core/build/standalone'
-
 import Hash from '@ioc:Adonis/Core/Hash'
 import { prisma } from '@ioc:Adonis/Addons/Prisma'
 import { NotificationTypeEnum } from 'Contracts/enums'

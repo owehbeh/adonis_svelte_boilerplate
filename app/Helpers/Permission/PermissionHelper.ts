@@ -1,5 +1,5 @@
 import { Role } from '@prisma/client'
-import { PermissionsEnum } from 'Contracts/enums'
+import * as permissions from '../Permission/permissions.json'
 
 export const hasPermission = (user: any, permissions: string[]) => {
   let canDo = false
@@ -18,30 +18,30 @@ export const hasPermission = (user: any, permissions: string[]) => {
 // ["VIEW_CUSTOMERS", "VIEW_SUPPLIERS", "VIEW_USERS", "VIEW_SETTINGS", "VIEW_REQUESTS", "VIEW_ORDERS", "VIEW_DELIVERIES", "VIEW_TRACKING", "CREATE_REQUEST", "CREATE_ORDER", "CREATE_DELIVERY", "CREATE_CUSTOMER", "CREATE_SUPPLIER", "CREATE_USER", "EDIT_REQUEST", "EDIT_ORDER", "EDIT_DELIVERY", "EDIT_CUSTOMER", "EDIT_SUPPLIER", "EDIT_USER", "EDIT_SETTINGS", "DELETE_REQUEST", "DELETE_ORDER", "DELETE_DELIVERY", "DELETE_CUSTOMER", "DELETE_SUPPLIER", "DELETE_USER"]
 export const AppRoles = (organizationId: string): Role[] => {
   // Define Permissions
-  const allPermissions = Object.keys(PermissionsEnum).map((key) => PermissionsEnum[key])
+  const allPermissions = Object.keys(permissions).map((key) => permissions[key])
   const employeePermission = [
-    PermissionsEnum.VIEW_DASHBOARD,
-    PermissionsEnum.VIEW_REQUESTS,
-    PermissionsEnum.VIEW_ORDERS,
-    PermissionsEnum.VIEW_DELIVERIES,
-    PermissionsEnum.VIEW_TRACKING,
-    PermissionsEnum.VIEW_CUSTOMERS,
-    PermissionsEnum.VIEW_SUPPLIERS,
-    PermissionsEnum.EDIT_REQUEST,
-    PermissionsEnum.EDIT_ORDER,
-    PermissionsEnum.EDIT_DELIVERY,
-    PermissionsEnum.EDIT_CUSTOMER,
-    PermissionsEnum.EDIT_SUPPLIER,
-    PermissionsEnum.DELETE_REQUEST,
-    PermissionsEnum.DELETE_ORDER,
-    PermissionsEnum.DELETE_DELIVERY,
-    PermissionsEnum.DELETE_CUSTOMER,
-    PermissionsEnum.DELETE_SUPPLIER,
-    PermissionsEnum.CREATE_REQUEST,
-    PermissionsEnum.CREATE_ORDER,
-    PermissionsEnum.CREATE_DELIVERY,
-    PermissionsEnum.CREATE_CUSTOMER,
-    PermissionsEnum.CREATE_SUPPLIER,
+    permissions.VIEW_DASHBOARD,
+    permissions.VIEW_REQUESTS,
+    permissions.VIEW_ORDERS,
+    permissions.VIEW_DELIVERIES,
+    permissions.VIEW_TRACKING,
+    permissions.VIEW_CUSTOMERS,
+    permissions.VIEW_SUPPLIERS,
+    permissions.EDIT_REQUEST,
+    permissions.EDIT_ORDER,
+    permissions.EDIT_DELIVERY,
+    permissions.EDIT_CUSTOMER,
+    permissions.EDIT_SUPPLIER,
+    permissions.DELETE_REQUEST,
+    permissions.DELETE_ORDER,
+    permissions.DELETE_DELIVERY,
+    permissions.DELETE_CUSTOMER,
+    permissions.DELETE_SUPPLIER,
+    permissions.CREATE_REQUEST,
+    permissions.CREATE_ORDER,
+    permissions.CREATE_DELIVERY,
+    permissions.CREATE_CUSTOMER,
+    permissions.CREATE_SUPPLIER,
   ]
   // Define Roles
   let rolesToReturn: Role[] = []
