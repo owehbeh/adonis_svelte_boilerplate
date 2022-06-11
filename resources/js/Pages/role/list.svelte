@@ -7,7 +7,7 @@
 
 <MainLayout myData={DATA}>
   <div style="margin:20px">
-    <h1>Notes</h1>
+    <h1>Roles</h1>
     <br />
     <div class="overflow-x-auto">
       <table class="table table-zebra w-full">
@@ -15,27 +15,25 @@
         <thead>
           <tr>
             <th>id</th>
-<th>title</th>
-<th>body</th>
+<th>name</th>
 <th>createdAt</th>
 <th>updatedAt</th>
-<th>user</th>
-<th>request</th>
-<th>item</th>
+<th>permissions</th>
+<th>organization</th>
+<th>User</th>
 
           </tr>
         </thead>
         <tbody>
-          {#each $page.props.noteList as note }
+          {#each $page.props.roleList as role }
             <tr>
-              <td><a href="/notes/{note.id}">{note.id}</a></td>
-<td><a href="/notes/{note.id}">{note.title}</a></td>
-<td><a href="/notes/{note.id}">{note.body}</a></td>
-<td><a href="/notes/{note.id}">{note.createdAt}</a></td>
-<td><a href="/notes/{note.id}">{note.updatedAt}</a></td>
-<td>{note.user}</td>
-<td>{note.request?.length}</td>
-<td>{note.item?.length}</td>
+              <td><a href="/roles/{role.id}">{role.id}</a></td>
+<td><a href="/roles/{role.id}">{role.name}</a></td>
+<td><a href="/roles/{role.id}">{role.createdAt}</a></td>
+<td><a href="/roles/{role.id}">{role.updatedAt}</a></td>
+<td>{role.permissions}</td>
+<td>{role.organization}</td>
+<td>{role.User?.length}</td>
 
             </tr>
           {/each}

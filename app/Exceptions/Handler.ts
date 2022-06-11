@@ -15,6 +15,8 @@
 
 import Logger from '@ioc:Adonis/Core/Logger'
 import HttpExceptionHandler from '@ioc:Adonis/Core/HttpExceptionHandler'
+import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import FeedbackHelper from 'App/Helpers/FeedbackHelper'
 
 export default class ExceptionHandler extends HttpExceptionHandler {
   protected statusPages = {
@@ -25,5 +27,17 @@ export default class ExceptionHandler extends HttpExceptionHandler {
 
   constructor() {
     super(Logger)
+  }
+
+  public async handle(error: any, ctx: HttpContextContract) {
+    /**
+     * Self handle the validation exception
+     */
+    return FeedbackHelper.handleError(ctx, error)
+
+    // /**
+    //  * Forward rest of the exceptions to the parent class
+    //  */
+    // return super.handle(error, ctx)
   }
 }

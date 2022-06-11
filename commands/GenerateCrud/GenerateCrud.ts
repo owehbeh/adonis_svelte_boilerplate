@@ -35,83 +35,77 @@ export default class GenerateCrud extends BaseCommand {
     const myModelProps = myModel.properties
     const myModelName = myModelTitle.toLocaleLowerCase()
     const templatesPath = `commands/GenerateCrud/templates`
-    const listViewTemplateName = `model_list.svelte`
-    const controllerTemplateName = `model_controller.ts`
+    const listViewTemplateName = `list.svelte`
+    const singleViewTemplateName = `single.svelte`
+    const editAddViewTemplateName = `edit_add.svelte`
+    const singleTextBlockTemplateName = `blocks/single_text_block.svelte`
+    const modalListBlockTemplateName = `blocks/modal_list_block.svelte`
+    const controllerTemplateName = `controller.ts`
     const viewsPagesPath = `resources/js/pages`
     const generatedListViewName = `list.svelte`
     const generatedSingleViewName = `single.svelte`
     const generatedEditAddViewName = `editAdd.svelte`
     const controllerPath = `app/Controllers/Http`
-    let controllerName = `${myModelTitle}sController`
-    let controllerFilePath = `${controllerPath}/${controllerName}.ts`
+    const controllerName = `${myModelTitle}sController`
+    const controllerFilePath = `${controllerPath}/${controllerName}.ts`
     const listApiName = `${myModelName}ListView`
     const singleApiName = `${myModelName}SingleView`
     const editAddApiName = `${myModelName}EditAddView`
     const deleteApiName = `${myModelName}Delete`
     const permissionsJsonPath = `app/Helpers/Permission/permissions.json`
-
-    // SECTION LIST VIEW
-    // Load template
-    const generatedListViewPath = this.generateListView(
-      templatesPath,
-      listViewTemplateName,
+    let myValues = {
+      myModelTitle,
+      myModel,
       myModelProps,
       myModelName,
-      myModelTitle,
-      viewsPagesPath,
-      generatedListViewName
-    )
-    // SECTION SINGLE VIEW
-    let generatedSingleViewPath = ''
-    // SECTION EDIT/ADD VIEW
-    let generatedEditAddViewPath = ''
-    // SECTION PERMISSIONS
-    this.updatePermissions(myModelTitle, permissionsJsonPath)
-    // SECTION CONTROLLER
-    // Load template
-    let controllerResult = this.generateController(
       templatesPath,
+      listViewTemplateName,
+      singleViewTemplateName,
+      editAddViewTemplateName,
+      singleTextBlockTemplateName,
+      modalListBlockTemplateName,
       controllerTemplateName,
-      controllerFilePath,
-      controllerName,
-      controllerPath,
-      myModelName,
-      listApiName,
-      singleApiName,
-      editAddApiName,
+      viewsPagesPath,
       generatedListViewName,
       generatedSingleViewName,
       generatedEditAddViewName,
-      myModel
-    )
-    controllerName = controllerResult.controllerName
-    controllerFilePath = controllerResult.controllerFilePath
-    // SECTION Guides
-    await this.openGuides(
-      templatesPath,
-      generatedListViewPath,
-      generatedSingleViewPath,
-      generatedEditAddViewPath,
-      controllerFilePath,
+      controllerPath,
       controllerName,
+      controllerFilePath,
       listApiName,
       singleApiName,
       editAddApiName,
       deleteApiName,
-      myModelName
-    )
+      permissionsJsonPath,
+    }
+    // SECTION LIST VIEW
+    // Load template
+    myValues['generatedListViewPath'] = this.generateListView(myValues)
+    // SECTION SINGLE VIEW
+    myValues['generatedSingleViewPath'] = this.generateSingleView(myValues)
+    // SECTION EDIT/ADD VIEW
+    myValues['generatedEditAddViewPath'] = ''
+    // SECTION PERMISSIONS
+    this.updatePermissions(myValues)
+    // SECTION CONTROLLER
+    // Load template
+    let controllerResult = this.generateController(myValues)
+    myValues.controllerName = controllerResult.controllerName
+    myValues.controllerFilePath = controllerResult.controllerFilePath
+    // SECTION Guides
+    await this.openGuides(myValues)
   }
 
-  private updatePermissions(myModelTitle: any, permissionsJsonPath: string) {
-    const MY_MODAL = myModelTitle.toUpperCase()
-    let permissions = JSON.parse(fs.readFileSync(permissionsJsonPath, 'utf8'))
-    permissions[`VIEW_${MY_MODAL}S`] = `View ${myModelTitle}s`
-    permissions[`CREATE_${MY_MODAL}S`] = `Create ${myModelTitle}s`
-    permissions[`EDIT_${MY_MODAL}S`] = `Edit ${myModelTitle}s`
-    permissions[`DELETE_${MY_MODAL}S`] = `Delete ${myModelTitle}s`
-    if (fs.existsSync(permissionsJsonPath)) {
+  private updatePermissions(val: any) {
+    const MY_MODAL = val.myModelTitle.toUpperCase()
+    let permissions = JSON.parse(fs.readFileSync(val.permissionsJsonPath, 'utf8'))
+    permissions[`VIEW_${MY_MODAL}S`] = `View ${val.myModelTitle}s`
+    permissions[`CREATE_${MY_MODAL}S`] = `Create ${val.myModelTitle}s`
+    permissions[`EDIT_${MY_MODAL}S`] = `Edit ${val.myModelTitle}s`
+    permissions[`DELETE_${MY_MODAL}S`] = `Delete ${val.myModelTitle}s`
+    if (fs.existsSync(val.permissionsJsonPath)) {
       fs.writeFileSync(
-        permissionsJsonPath,
+        val.permissionsJsonPath,
         JSON.stringify(permissions),
         { enconding: null },
         function (err) {
@@ -123,40 +117,28 @@ export default class GenerateCrud extends BaseCommand {
     }
   }
 
-  private async openGuides(
-    templatesPath: string,
-    generatedListViewPath: string,
-    generatedSingleViewPath: string,
-    generatedEditAddViewPath: string,
-    controllerFilePath: string,
-    controllerName: string,
-    listApiName: string,
-    singleApiName: string,
-    editAddApiName: string,
-    deleteApiName: string,
-    myModelName: string
-  ) {
-    var guidesTemplateFile = fs.readFileSync(`${templatesPath}/guides.html`, 'utf-8')
+  private async openGuides(val) {
+    var guidesTemplateFile = fs.readFileSync(`${val.templatesPath}/guides.html`, 'utf-8')
     const guidesTemplate = Handlebars.compile(guidesTemplateFile, { noEscape: true })
     const guidesContents = guidesTemplate({
-      view_paths: `Listview path: ${generatedListViewPath}\n      Singleview path: ${generatedSingleViewPath}\n      Listview path: ${generatedEditAddViewPath}\n`,
-      controller_path: controllerFilePath,
+      view_paths: `Listview path: ${val.generatedListViewPath}\n      Singleview path: ${val.generatedSingleViewPath}\n      Listview path: ${val.generatedEditAddViewPath}\n`,
+      controller_path: val.controllerFilePath,
       routes: `
       Route.group(() => {
-        Route.get('/', '${controllerName}.${listApiName}')
-        Route.get('/:id', '${controllerName}.${singleApiName}')
-        Route.get('/:id?', '${controllerName}.${editAddApiName}')
-        Route.post('/:id?', '${controllerName}.${editAddApiName.replace('View', '')}')
-        Route.delete('/:id?', '${controllerName}.${deleteApiName}')
+        Route.get('/', '${val.controllerName}.${val.listApiName}')
+        Route.get('/:id', '${val.controllerName}.${val.singleApiName}')
+        Route.get('/:id?', '${val.controllerName}.${val.editAddApiName}')
+        Route.post('/:id?', '${val.controllerName}.${val.editAddApiName.replace('View', '')}')
+        Route.delete('/:id?', '${val.controllerName}.${val.deleteApiName}')
       })
-      .prefix('${myModelName}s/')
+      .prefix('${val.myModelName}s/')
         .middleware(['auth'])
       `,
     })
     // Make sure path sxist
     ensureExists(`tmp/generateCrud/`)
     // Write content to disk
-    const guidesViewPath = `tmp/generateCrud/${myModelName}_guide.html`
+    const guidesViewPath = `tmp/generateCrud/${val.myModelName}_guide.html`
     fs.writeFileSync(guidesViewPath, guidesContents, function (err) {
       if (err) {
         return console.log(err)
@@ -167,117 +149,189 @@ export default class GenerateCrud extends BaseCommand {
     await fsExtra.remove('tmp/generateCrud/')
   }
 
-  private generateController(
-    templatesPath: string,
-    controllerTemplateName: string,
-    controllerFilePath: string,
-    controllerName: string,
-    controllerPath: string,
-    myModelName: string,
-    listApiName: string,
-    singleApiName: string,
-    editAddApiName: string,
-    generatedListViewName: string,
-    generatedSingleViewName: string,
-    generatedEditAddViewName: string,
-    myModel: any
-  ) {
+  private generateController(val) {
     var controllerTemplateFile = fs.readFileSync(
-      `${templatesPath}/${controllerTemplateName}`,
+      `${val.templatesPath}/${val.controllerTemplateName}`,
       'utf-8'
     )
     const controllerTemplate = Handlebars.compile(controllerTemplateFile, { noEscape: true })
     // Make sure file does not sxist
-    if (fs.existsSync(controllerFilePath)) {
-      controllerName = `RenameMe${controllerName}`
-      controllerFilePath = `${controllerPath}/${controllerName}.ts`
+    if (fs.existsSync(val.controllerFilePath)) {
+      val.controllerName = `RenameMe${val.controllerName}`
+      val.controllerFilePath = `${val.controllerPath}/${val.controllerName}.ts`
     }
     // Build relations query include string
     let modelRelations = ''
-    Object.keys(myModel.properties).forEach((prop) => {
-      const currentProp = myModel.properties[prop]
+    Object.keys(val.myModel.properties).forEach((prop) => {
+      const currentProp = val.myModel.properties[prop]
       const isTypeOfArray = currentProp.type && currentProp.type === 'array'
       const isTypeOfAnyOf = currentProp.anyOf
       if (isTypeOfArray || isTypeOfAnyOf) modelRelations += `${prop}:true, `
     })
     // Create list content
     const controllerContent = controllerTemplate({
-      model_name: myModelName,
-      list_api_name: listApiName,
-      single_api_name: singleApiName,
-      edit_delete_api_name: editAddApiName,
-      list_view_path: `${myModelName}/${generatedListViewName.replace('.svelte', '')}`,
-      single_view_path: `${myModelName}/${generatedSingleViewName.replace('.svelte', '')}`,
-      edit_delete_view_path: `${myModelName}/${generatedEditAddViewName.replace('.svelte', '')}`,
-      controller_name: controllerName,
+      model_name: val.myModelName,
+      list_api_name: val.listApiName,
+      single_api_name: val.singleApiName,
+      edit_delete_api_name: val.editAddApiName,
+      list_view_path: `${val.myModelName}/${val.generatedListViewName.replace('.svelte', '')}`,
+      single_view_path: `${val.myModelName}/${val.generatedSingleViewName.replace('.svelte', '')}`,
+      edit_delete_view_path: `${val.myModelName}/${val.generatedEditAddViewName.replace(
+        '.svelte',
+        ''
+      )}`,
+      controller_name: val.controllerName,
       model_relations: modelRelations,
     })
     // Write content to disk
-    fs.writeFileSync(controllerFilePath, controllerContent, { enconding: null }, function (err) {
-      if (err) {
-        return console.log(err)
+    fs.writeFileSync(
+      val.controllerFilePath,
+      controllerContent,
+      { enconding: null },
+      function (err) {
+        if (err) {
+          return console.log(err)
+        }
       }
-    })
-    return { controllerFilePath, controllerName }
+    )
+    return val
   }
 
-  private generateListView(
-    templatesPath: string,
-    listViewTemplateName: string,
-    myModelProps: any,
-    myModelName: string,
-    myModelTitle: string,
-    viewsPagesPath: string,
-    generatedListViewName: string
-  ) {
-    var listViewTemplateFile = fs.readFileSync(`${templatesPath}/${listViewTemplateName}`, 'utf-8')
+  private generateListView(val) {
+    var listViewTemplateFile = fs.readFileSync(
+      `${val.templatesPath}/${val.listViewTemplateName}`,
+      'utf-8'
+    )
     const listViewTemplateHandlebar = Handlebars.compile(listViewTemplateFile, { noEscape: true })
     // Build table titles
     let tableTitles = ''
     let tableValues = ''
-    Object.keys(myModelProps).forEach((propKey) => {
-      const currentProperty = myModelProps[propKey]
-      tableTitles += `<th>${propKey}</th>\n`
+    Object.keys(val.myModelProps).forEach((propKey) => {
+      const currentProperty = val.myModelProps[propKey]
+      tableTitles += `<th>{txt('${propKey}')}</th>\n`
       let valueToSet = ''
       switch (currentProperty.type) {
         case 'string':
-          valueToSet = `<td>{${myModelName}.${propKey}}</td>\n`
+          valueToSet = `<td><a href="/${val.myModelName}s/{${val.myModelName}.id}">{${val.myModelName}.${propKey}}</a></td>\n`
           break
         case 'boolean':
-          valueToSet = `<td>{${myModelName}.${propKey}}</td>\n`
+          valueToSet = `<td>{${val.myModelName}.${propKey}}</td>\n`
           break
         case 'array':
-          valueToSet = `<td>{${myModelName}.${propKey}?.length}</td>\n`
+          valueToSet = `<td>{${val.myModelName}.${propKey}?.length}</td>\n`
           break
         case Array:
-          valueToSet = `<td>{${myModelName}.${propKey}?.length}</td>\n`
+          valueToSet = `<td>{${val.myModelName}.${propKey}?.length}</td>\n`
           break
         default:
           if (currentProperty.anyOf)
-            valueToSet = `<td><a href="/${propKey}s/{${myModelName}.${propKey}.id}">{${myModelName}.${propKey}.id}</a></td>\n`
-          else valueToSet = `<td>{${myModelName}.${propKey}}</td>\n`
+            valueToSet = `<td><a href="/${propKey}s/{${val.myModelName}.${propKey}.id}">{${val.myModelName}.${propKey}.id}</a></td>\n`
+          else valueToSet = `<td>{${val.myModelName}.${propKey}}</td>\n`
           break
       }
       tableValues += valueToSet
     })
-    // Build table values
+    // Build table val
     // Create list content
     const listViewContent = listViewTemplateHandlebar({
-      model_name_title: myModelTitle,
-      model_name: myModelName,
+      model_name_title: val.myModelTitle,
+      model_name: val.myModelName,
       table_titles: tableTitles,
       table_values: tableValues,
     })
     // Make sure path sxist
-    ensureExists(`${viewsPagesPath}/${myModelName}/`)
+    ensureExists(`${val.viewsPagesPath}/${val.myModelName}/`)
     // Write content to disk
-    const generatedListViewPath = `${viewsPagesPath}/${myModelName}/${generatedListViewName}`
+    const generatedListViewPath = `${val.viewsPagesPath}/${val.myModelName}/${val.generatedListViewName}`
     fs.writeFileSync(generatedListViewPath, listViewContent, { enconding: null }, function (err) {
       if (err) {
         return console.log(err)
       }
     })
     return generatedListViewPath
+  }
+
+  private generateSingleView(val) {
+    // Load single view template file
+    var singleViewTemplateFile = fs.readFileSync(
+      `${val.templatesPath}/${val.singleViewTemplateName}`,
+      'utf-8'
+    )
+    const singleViewTemplateHandlebar = Handlebars.compile(singleViewTemplateFile, {
+      noEscape: true,
+    })
+    // Load other related template files
+    // Page text content for props
+    var singleTextBlockTemplateFile = fs.readFileSync(
+      `${val.templatesPath}/${val.singleTextBlockTemplateName}`,
+      'utf-8'
+    )
+    const singleTextBlockTemplateHandlebar = Handlebars.compile(singleTextBlockTemplateFile, {
+      noEscape: true,
+    })
+    // Page modal content for relations
+    var modalListBlockTemplateFile = fs.readFileSync(
+      `${val.templatesPath}/${val.modalListBlockTemplateName}`,
+      'utf-8'
+    )
+    const modalListBlockTemplateHandlebar = Handlebars.compile(modalListBlockTemplateFile, {
+      noEscape: true,
+    })
+    let modalsContent = ''
+    let pageTextContent = ''
+    Object.keys(val.myModelProps).forEach((propKey) => {
+      const currentProperty = val.myModelProps[propKey]
+      let valueToSet = ''
+      switch (currentProperty.type) {
+        case 'string':
+          valueToSet = `{${val.myModelName}.${propKey}}`
+          break
+        case 'boolean':
+          valueToSet = `{${val.myModelName}.${propKey}}`
+          break
+        case 'array':
+          valueToSet = `<a href="#${val.myModelName}-${propKey}-modal" class="cursor-pointer">{txt('View')} ({${val.myModelName}.${propKey}?.length})</a>`
+          modalsContent += modalListBlockTemplateHandlebar({
+            model_name: val.myModelName,
+            prop_name: propKey,
+          })
+          break
+        case Array:
+          valueToSet = `{${val.myModelName}.${propKey}?.length}`
+          break
+        default:
+          if (currentProperty.anyOf)
+            valueToSet = `<a href="/${propKey}s/{${val.myModelName}.${propKey}.id}">{${val.myModelName}.${propKey}.id}</a>`
+          else valueToSet = `{${val.myModelName}.${propKey}}`
+          break
+      }
+      pageTextContent += singleTextBlockTemplateHandlebar({
+        prop_name: propKey,
+        prop_value: valueToSet,
+      })
+    })
+    // Create single content
+    const singleViewContent = singleViewTemplateHandlebar({
+      page_text_content: pageTextContent,
+      model_name: val.myModelName,
+      model_name_title: val.myModelTitle,
+      modals_content: modalsContent,
+    })
+    // Make sure path sxist
+    ensureExists(`${val.viewsPagesPath}/${val.myModelName}/`)
+    // Write content to disk
+    const generatedSingleViewPath = `${val.viewsPagesPath}/${val.myModelName}/${val.generatedSingleViewName}`
+    fs.writeFileSync(
+      generatedSingleViewPath,
+      singleViewContent,
+      { enconding: null },
+      function (err) {
+        if (err) {
+          return console.log(err)
+        }
+      }
+    )
+    return generatedSingleViewPath
   }
 }
 

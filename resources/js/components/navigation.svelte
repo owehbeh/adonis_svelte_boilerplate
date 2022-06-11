@@ -108,7 +108,9 @@
       </div>
     </div>
     <!-- PAGE CONTENT -->
-    <slot />
+    <article class="prose max-w-none hover:prose-a:text-blue-900">
+      <slot />
+    </article>
   </div>
   <!-- SIDE MENU CONTENT -->
   <div class="drawer-side">

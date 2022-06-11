@@ -12,7 +12,7 @@ export const switchLanguage = () => {
 }
 
 export const txt = (text) => {
-  return lan[selectedLanguage][text]
+  return lan[selectedLanguage][text] || text
 }
 
 export let lan = {
@@ -36,6 +36,8 @@ export let lan = {
     'Login to your account': 'Login to your account',
     'Organizations': 'Organizations',
     'Usage': 'Usage',
+    'View': 'View',
+    'notes': 'notes',
   },
   ar: {
     'Hello,': 'مرحبا،',
@@ -57,5 +59,7 @@ export let lan = {
     'Login to your account': 'تسجيل الدخول إلى حسابك',
     'Organizations': 'المنظمات',
     'Usage': 'إستعمال',
+    'View': 'شاهد',
+    'notes': 'ملاحظات',
   },
 }

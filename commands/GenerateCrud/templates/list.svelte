@@ -1,4 +1,5 @@
 <script>
+  import { txt } from '../../language'
   import MainLayout from './../../layouts/main.svelte'
   import { decodeProps, parseDbDate } from '../../helpers.js'
   import { page } from '@inertiajs/inertia-svelte'
@@ -7,7 +8,7 @@
 
 <MainLayout myData={DATA}>
   <div style="margin:20px">
-    <h1>{{ model_name_title }}</h1>
+    <h1>{txt('{{model_name_title}}s')}</h1>
     <br />
     <div class="overflow-x-auto">
       <table class="table table-zebra w-full">

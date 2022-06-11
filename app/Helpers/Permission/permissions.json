@@ -30,5 +30,16 @@
   "VIEW_WAREHOUSES": "View Warehouses",
   "CREATE_WAREHOUSES": "Create Warehouses",
   "EDIT_WAREHOUSES": "Edit Warehouses",
-  "DELETE_WAREHOUSES": "Delete Warehouses"
+  "DELETE_WAREHOUSES": "Delete Warehouses",
+  "CREATE_USERS": "Create Users",
+  "EDIT_USERS": "Edit Users",
+  "DELETE_USERS": "Delete Users",
+  "VIEW_ROLES": "View Roles",
+  "CREATE_ROLES": "Create Roles",
+  "EDIT_ROLES": "Edit Roles",
+  "DELETE_ROLES": "Delete Roles",
+  "VIEW_NOTES": "View Notes",
+  "CREATE_NOTES": "Create Notes",
+  "EDIT_NOTES": "Edit Notes",
+  "DELETE_NOTES": "Delete Notes"
 }

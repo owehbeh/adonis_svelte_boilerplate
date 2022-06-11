@@ -49,18 +49,6 @@ Route.group(() => {
   .prefix('requests/')
   .middleware('auth')
 
-/* -------------------------------- WAREHOUSE ------------------------------- */
-Route.group(() => {
-  Route.get('/', 'RenameMeWarehousesController.warehouseListView').middleware([
-    `canDo:${permissions.VIEW_WAREHOUSES}`,
-  ])
-  Route.get('/:id', 'RenameMeWarehousesController.warehouseSingleView')
-  Route.get('/:id?', 'RenameMeWarehousesController.warehouseEditAddView')
-  Route.post('/:id?', 'RenameMeWarehousesController.warehouseEditAdd')
-  Route.delete('/:id?', 'RenameMeWarehousesController.warehouseDelete')
-})
-  .prefix('warehouses/')
-  .middleware(['auth'])
 /* ------------------------------- SUPER ADMIN ------------------------------ */
 Route.group(() => {
   Route.get('/organizations', 'SuperAdminController.organizationView')
@@ -69,12 +57,39 @@ Route.group(() => {
   .prefix('super/')
   .middleware(['auth', 'superAdmin'])
 
+/* ---------------------------------- USER ---------------------------------- */
+
 Route.group(() => {
   Route.get('/', 'RenameMeUsersController.userListView')
+  Route.get('/:id', 'RenameMeUsersController.userSingleView')
+  Route.get('/:id?', 'RenameMeUsersController.userEditAddView')
+  Route.post('/:id?', 'RenameMeUsersController.userEditAdd')
+  Route.delete('/:id?', 'RenameMeUsersController.userDelete')
 })
   .prefix('users/')
   .middleware(['auth'])
 
+/* ---------------------------------- ROLE ---------------------------------- */
+Route.group(() => {
+  Route.get('/', 'RolesController.roleListView')
+  Route.get('/:id', 'RolesController.roleSingleView')
+  Route.get('/:id?', 'RolesController.roleEditAddView')
+  Route.post('/:id?', 'RolesController.roleEditAdd')
+  Route.delete('/:id?', 'RolesController.roleDelete')
+})
+  .prefix('roles/')
+  .middleware(['auth'])
+
+/* ---------------------------------- NOTE ---------------------------------- */
+Route.group(() => {
+  Route.get('/', 'NotesController.noteListView')
+  Route.get('/:id', 'NotesController.noteSingleView')
+  Route.get('/:id?', 'NotesController.noteEditAddView')
+  Route.post('/:id?', 'NotesController.noteEditAdd')
+  Route.delete('/:id?', 'NotesController.noteDelete')
+})
+  .prefix('notes/')
+  .middleware(['auth'])
 /* --------------------------------- TESTING -------------------------------- */
 Route.get('/pizza', async ({ inertia }) => {
   return inertia.render('pizza', { text: 'Pizza' })

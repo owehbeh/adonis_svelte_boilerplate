@@ -18,6 +18,7 @@
     "@smui/menu": "^6.0.0-beta.15",
     "@smui/top-app-bar": "^6.0.0-beta.15",
     "@symfony/webpack-encore": "^1.8.2",
+    "@tailwindcss/typography": "^0.5.2",
     "adonis-preset-ts": "^2.1.0",
     "autoprefixer": "^10.4.4",
     "eslint": "^8.13.0",
