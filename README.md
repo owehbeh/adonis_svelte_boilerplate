@@ -25,10 +25,18 @@ The need for building fast reactive apps is rising, and having to build and mana
 - ✅ [Themes](#themes)
 - 🔜 [User Management](#user-management)
   - 🔜 [Users](#users)
+    - ✅ Login
+    - 🔜 Register
+    - 🔜 Reset Password
+    - 🔜 Change Password
+    - 🔜 Confirm Email
   - ✅ [Roles](#roles)
   - ✅ [Permissions](#permissions)
 - ✅ [Translation](#translation)
 - 🔜 [Code Generation](#code-generation)
+  - ✅ List page
+  - ✅ Single page
+  - 🔜 Add/Edit page
 - ✅ [Socket](#socket)
 - ✅ [Install](#install)
 - ✅ [Run](#run)
