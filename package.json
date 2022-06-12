@@ -1,6 +1,8 @@
 {
-  "name": "adonis_dtd",
+  "name": "adonis_svelte_crud",
   "version": "1.0.0",
+  "author": "owehbeh@gmail.com",
+  "description": "Adonis.js + Svelte: Server-Side-Routed Boilerplate",
   "private": true,
   "scripts": {
     "dev": "node ace serve --watch",
