@@ -17,21 +17,21 @@ The need for building fast reactive apps is rising, and having to build and mana
 
 ## Table of Contents
 
-- [Features](#features)
-- [Project Structure](#project-structure)
-- [Prisma](#prisma)
-- [Error Handling](#error-handling)
-- [Menu](#menu)
-- [Themes](#themes)
-- [User Management](#user-management)
-  - [Users](#users)
-  - [Roles](#roles)
-  - [Permissions](#permissions)
-- [Translation](#translation)
-- [Code Generation](#code-generation)
-- [Socket](#socket)
-- [Install](#install)
-- [Run](#run)
+- ✅ [Features](#features)
+- ✅ [Project Structure](#project-structure)
+- ✅ [Prisma](#prisma)
+- ✅ [Error Handling](#error-handling)
+- ✅ [Menu](#menu)
+- ✅ [Themes](#themes)
+- 🔜 [User Management](#user-management)
+  - 🔜 [Users](#users)
+  - ✅ [Roles](#roles)
+  - ✅ [Permissions](#permissions)
+- ✅ [Translation](#translation)
+- 🔜 [Code Generation](#code-generation)
+- ✅ [Socket](#socket)
+- ✅ [Install](#install)
+- ✅ [Run](#run)
 
 ## Features
 
