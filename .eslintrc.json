@@ -2,6 +2,7 @@
   "extends": ["plugin:adonis/typescriptApp", "prettier"],
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": ["error"]
+    "prettier/prettier": ["error"],
+    "ignore-a11y-label-has-associated-control": true
   }
 }

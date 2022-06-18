@@ -62,7 +62,7 @@ Route.group(() => {
 Route.group(() => {
   Route.get('/', 'RenameMeUsersController.userListView')
   Route.get('/:id', 'RenameMeUsersController.userSingleView')
-  Route.get('/:id?', 'RenameMeUsersController.userEditAddView')
+  Route.get('/edit/:id?', 'RenameMeUsersController.userEditAddView')
   Route.post('/:id?', 'RenameMeUsersController.userEditAdd')
   Route.delete('/:id?', 'RenameMeUsersController.userDelete')
 })
@@ -80,7 +80,7 @@ Route.group(() => {
   .prefix('roles/')
   .middleware(['auth'])
 
-/* ---------------------------------- NOTE ---------------------------------- */
+/* ---------------------------------- _NOTE ---------------------------------- */
 Route.group(() => {
   Route.get('/', 'NotesController.noteListView')
   Route.get('/:id', 'NotesController.noteSingleView')

@@ -11,7 +11,7 @@
 <MainLayout myData={DATA}>
   <div style="margin:20px">
     <h2>{txt('{{model_name_title}}')}</h2>
-    <div class="flex flex-wrap -mx-2 overflow-hidden">
+    <div class="flex flex-wrap -mx-2">
       {{page_text_content}}
     </div>
   {{modals_content}}

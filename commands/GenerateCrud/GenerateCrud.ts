@@ -127,7 +127,7 @@ export default class GenerateCrud extends BaseCommand {
       Route.group(() => {
         Route.get('/', '${val.controllerName}.${val.listApiName}')
         Route.get('/:id', '${val.controllerName}.${val.singleApiName}')
-        Route.get('/:id?', '${val.controllerName}.${val.editAddApiName}')
+        Route.get('/edit/:id?', '${val.controllerName}.${val.editAddApiName}')
         Route.post('/:id?', '${val.controllerName}.${val.editAddApiName.replace('View', '')}')
         Route.delete('/:id?', '${val.controllerName}.${val.deleteApiName}')
       })

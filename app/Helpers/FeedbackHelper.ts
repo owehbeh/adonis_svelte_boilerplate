@@ -318,4 +318,3 @@ const notificationTypesList = [
   'fatal',
 ] as const
 export type NotificationType = typeof notificationTypesList[number]
-// const isNotificationType = (x: any): x is NotificationType => notificationTypesList.includes(x)
