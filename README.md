@@ -15,6 +15,12 @@ A boilerplate for building a reactive server-side-rendered and server-side-route
 
 The need for building fast reactive apps is rising, and having to build and manage both front-end and backend routings heavily slows the process. This project tackles this challange in a strongly oppinionated approach, but you are free to make it yours. You can kickstart your app with the below [features](#features).
 
+<img src="https://user-images.githubusercontent.com/12089028/173215537-74eb4003-41da-4d20-9550-8a328b4dad08.png" width=31% height=50%> <img src="https://user-images.githubusercontent.com/12089028/173215270-a10d5966-a3f7-4788-8d2a-330bade97ca6.png" width=30% height=50%>
+<img src="https://user-images.githubusercontent.com/12089028/173215281-67045005-fc31-4037-911a-49a42cf39f3c.png" width=61.5% height=50%>
+<img src="https://user-images.githubusercontent.com/12089028/173216015-6c95ae33-50e6-4286-8d5f-c4b460670ff7.png" width=61.5% height=50%>
+<img src="https://user-images.githubusercontent.com/12089028/173215680-d99a14bf-114f-4d3c-8ac4-e1299713c52a.png" width=61.5% height=50%>
+
+
 ## Table of Contents
 
 - ✅ [Features](#features)
