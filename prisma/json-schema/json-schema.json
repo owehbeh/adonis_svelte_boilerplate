@@ -111,7 +111,14 @@
           "format": "date-time"
         },
         "user": {
-          "$ref": "#/definitions/User"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/User"
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "request": {
           "type": "array",

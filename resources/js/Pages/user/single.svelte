@@ -10,7 +10,12 @@
 
 <MainLayout myData={DATA}>
   <div style="margin:20px">
-    <h2>{txt('User')}</h2>
+    <h2>
+      {txt('User')}
+      <button href="/users/edit/{user.id}" class="btn btn-square btn-outline btn-sm">
+        <span class="material-icons"> edit </span>
+      </button>
+    </h2>
     <div class="flex flex-wrap -mx-2 overflow-hidden">
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('id')}</h4>
@@ -50,7 +55,10 @@
       </div>
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('notes')}</h4>
-        <p><a href="#user-notes-modal" class="cursor-pointer">{txt('View')} ({user.notes?.length})</a></p>
+        <p>
+          <a href="#user-notes-modal" class="cursor-pointer">{txt('View')} ({user.notes?.length})</a
+          >
+        </p>
       </div>
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('organization')}</h4>
@@ -58,19 +66,33 @@
       </div>
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('request')}</h4>
-        <p><a href="#user-request-modal" class="cursor-pointer">{txt('View')} ({user.request?.length})</a></p>
+        <p>
+          <a href="#user-request-modal" class="cursor-pointer"
+            >{txt('View')} ({user.request?.length})</a
+          >
+        </p>
       </div>
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('customer')}</h4>
-        <p><a href="#user-customer-modal" class="cursor-pointer">{txt('View')} ({user.customer?.length})</a></p>
+        <p>
+          <a href="#user-customer-modal" class="cursor-pointer"
+            >{txt('View')} ({user.customer?.length})</a
+          >
+        </p>
       </div>
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('supplier')}</h4>
-        <p><a href="#user-supplier-modal" class="cursor-pointer">{txt('View')} ({user.supplier?.length})</a></p>
+        <p>
+          <a href="#user-supplier-modal" class="cursor-pointer"
+            >{txt('View')} ({user.supplier?.length})</a
+          >
+        </p>
       </div>
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('item')}</h4>
-        <p><a href="#user-item-modal" class="cursor-pointer">{txt('View')} ({user.item?.length})</a></p>
+        <p>
+          <a href="#user-item-modal" class="cursor-pointer">{txt('View')} ({user.item?.length})</a>
+        </p>
       </div>
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('role')}</h4>
@@ -111,7 +133,9 @@
         <h3 class="font-bold text-lg">{txt('customer')}</h3>
         <ul class="menu p-2">
           {#each user.customer as customerItem}
-            <li class="m-0"><a href="/customers/customerItem.id" class="m-0">{customerItem.id}</a></li>
+            <li class="m-0">
+              <a href="/customers/customerItem.id" class="m-0">{customerItem.id}</a>
+            </li>
           {/each}
         </ul>
         <div class="modal-action">
@@ -125,7 +149,9 @@
         <h3 class="font-bold text-lg">{txt('supplier')}</h3>
         <ul class="menu p-2">
           {#each user.supplier as supplierItem}
-            <li class="m-0"><a href="/suppliers/supplierItem.id" class="m-0">{supplierItem.id}</a></li>
+            <li class="m-0">
+              <a href="/suppliers/supplierItem.id" class="m-0">{supplierItem.id}</a>
+            </li>
           {/each}
         </ul>
         <div class="modal-action">

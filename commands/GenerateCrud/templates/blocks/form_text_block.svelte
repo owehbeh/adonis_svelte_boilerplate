@@ -3,9 +3,9 @@
     <label class="label">
       <span class="label-text">{txt('{{prop_name}}')}</span>
     </label>
-    <input type="text" placeholder="{txt('Insert')} {txt('{{prop_name}}')}" class="input input-bordered w-full max-w-xs" />
+    <input name="{{prop_name}}" type="text" placeholder="{txt('Insert')} {txt('{{prop_name}}')}" class="input input-bordered w-full max-w-xs" />
     <label class="label">
-      <span class="label-text-alt">{DATA.errors.{{prop_name}} || ''}</span>
+      <span class="label-text-alt text-red-500">{DATA.errors.{{prop_name}} || ''}</span>
     </label>
   </div>
 </div>

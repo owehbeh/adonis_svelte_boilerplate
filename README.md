@@ -20,7 +20,6 @@ The need for building fast reactive apps is rising, and having to build and mana
 <img src="https://user-images.githubusercontent.com/12089028/173216015-6c95ae33-50e6-4286-8d5f-c4b460670ff7.png" width=61.5% height=50%>
 <img src="https://user-images.githubusercontent.com/12089028/173215680-d99a14bf-114f-4d3c-8ac4-e1299713c52a.png" width=61.5% height=50%>
 
-
 ## Table of Contents
 
 - ✅ [Features](#features)
@@ -29,6 +28,7 @@ The need for building fast reactive apps is rising, and having to build and mana
 - ✅ [Error Handling](#error-handling)
 - ✅ [Menu](#menu)
 - ✅ [Themes](#themes)
+- ✅ [Icons](#icons)
 - 🔜 [User Management](#user-management)
   - 🔜 [Users](#users)
     - ✅ Login
@@ -211,6 +211,12 @@ You need to change the default themes which are `lofi` and `black` as below:
 ```
 
 You may choose between the themes available at [DaisyUI here](https://daisyui.com/docs/themes/), or use your own themes which you can generate following [these steps](https://daisyui.com/theme-generator/).
+
+---
+
+## Icons
+
+[Google Material icons](https://fonts.google.com/icons?selected=Material+Icons) are available to use inside svelte pages and components.
 
 ---
 

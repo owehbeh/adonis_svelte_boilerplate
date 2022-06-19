@@ -63,7 +63,7 @@ Route.group(() => {
   Route.get('/', 'RenameMeUsersController.userListView')
   Route.get('/:id', 'RenameMeUsersController.userSingleView')
   Route.get('/edit/:id?', 'RenameMeUsersController.userEditAddView')
-  Route.post('/:id?', 'RenameMeUsersController.userEditAdd')
+  Route.post('/edit/:id?', 'RenameMeUsersController.userEditAdd')
   Route.delete('/:id?', 'RenameMeUsersController.userDelete')
 })
   .prefix('users/')
