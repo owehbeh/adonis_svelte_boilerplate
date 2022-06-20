@@ -3,14 +3,18 @@
   import MainLayout from './../../layouts/main.svelte'
   import { decodeProps, parseDbDate } from '../../helpers.js'
   import { page } from '@inertiajs/inertia-svelte'
-  import User from '../admin/user.svelte'
   let DATA = decodeProps($page.props.data)
   const {{model_name}} = $page.props.{{model_name}}
 </script>
 
 <MainLayout myData={DATA}>
   <div style="margin:20px">
-    <h2>{txt('{{model_name_title}}')}</h2>
+    <h2>
+      {txt('{{model_name_title}}')}
+      <a href="/users/edit/{ {{model_name}}.id }" class="btn btn-square btn-outline btn-sm">
+        <span class="material-icons"> {txt('edit')} </span>
+      </a>
+    </h2>
     <div class="flex flex-wrap -mx-2">
       {{page_text_content}}
     </div>

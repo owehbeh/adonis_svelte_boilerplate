@@ -35,13 +35,7 @@ export default class RenameMeUsersController {
 
   public async userEditAddView(ctx: HttpContextContract) {
     var user
-    var organizationList
-    var notesList
-    var requestList
-    var customerList
-    var supplierList
-    var itemList
-    var roleList
+    var relations = {}
     const userId: string = ctx.request.params().id
     if (userId) {
       user = await prisma.user.findUnique({
@@ -56,92 +50,88 @@ export default class RenameMeUsersController {
           role: true,
         },
       })
-      organizationList = await prisma.organization.findMany()
-      notesList = await prisma.note.findMany()
-      requestList = await prisma.request.findMany()
-      customerList = await prisma.customer.findMany()
-      supplierList = await prisma.supplier.findMany()
-      itemList = await prisma.item.findMany()
-      roleList = await prisma.role.findMany()
+      relations['notesList'] = await prisma.note.findMany()
+      relations['organizationList'] = await prisma.organization.findMany()
+      relations['requestList'] = await prisma.request.findMany()
+      relations['customerList'] = await prisma.customer.findMany()
+      relations['supplierList'] = await prisma.supplier.findMany()
+      relations['itemList'] = await prisma.item.findMany()
+      relations['roleList'] = await prisma.role.findMany()
     }
-
     return ctx.inertia.render('user/editAdd', {
       user,
-      organizationList,
-      notesList,
-      requestList,
-      customerList,
-      supplierList,
-      itemList,
-      roleList,
+      relations,
     })
   }
 
   public async userEditAdd(ctx: HttpContextContract) {
     var user
     const userId: string = ctx.request.params().id
-    let { name, validated, notes, organization } = ctx.request.body()
-    if (notes) notes = notes.split(',').map((n) => ({ id: n }))
+    let {
+      name,
+      email,
+      createdAt,
+      updatedAt,
+      validated,
+      password,
+      rememberMeToken,
+      superAdmin,
+      notes,
+      organization,
+      request,
+      customer,
+      supplier,
+      item,
+      role,
+    } = ctx.request.body()
+    if (notes) notes = notes.split(',').map((x) => ({ id: x }))
     else notes = []
-
-    var {
-      organizationList,
-      notesList,
-      requestList,
-      customerList,
-      supplierList,
-      itemList,
-      roleList,
-    } = await getAllRelationRecords()
+    if (request) request = request.split(',').map((x) => ({ id: x }))
+    else request = []
+    if (customer) customer = customer.split(',').map((x) => ({ id: x }))
+    else customer = []
+    if (supplier) supplier = supplier.split(',').map((x) => ({ id: x }))
+    else supplier = []
+    if (item) item = item.split(',').map((x) => ({ id: x }))
+    else item = []
 
     user = await prisma.user.upsert({
       where: { id: userId || '' },
-      include: {
-        notes: true,
-        organization: true,
-        request: true,
-        customer: true,
-        supplier: true,
-        item: true,
-        role: true,
-      },
       update: {
         name,
+        email,
+        createdAt,
+        updatedAt,
         validated: validated ? true : false,
-        notes: {
-          set: [],
-          connect: notes,
-        },
+        password,
+        rememberMeToken,
+        superAdmin: superAdmin ? true : false,
+        notes: { set: [], connect: notes },
+        organizationId: organization,
+        request: { set: [], connect: request },
+        customer: { set: [], connect: customer },
+        supplier: { set: [], connect: supplier },
+        item: { set: [], connect: item },
+        roleId: role,
       },
       create: {
         name,
+        email,
+        createdAt,
+        updatedAt,
         validated: validated ? true : false,
-        email: 'owehbeh@gmail.com',
-        password: '',
-        notes: {
-          connect: notes,
-        },
+        password,
+        rememberMeToken,
+        superAdmin: superAdmin ? true : false,
+        notes: { connect: notes },
+        organizationId: organization,
+        request: { connect: request },
+        customer: { connect: customer },
+        supplier: { connect: supplier },
+        item: { connect: item },
+        roleId: role,
       },
     })
-
     return ctx.response.redirect(`/users/${userId}`)
-  }
-}
-async function getAllRelationRecords() {
-  var organizationList = await prisma.organization.findMany()
-  var notesList = await prisma.note.findMany()
-  var requestList = await prisma.request.findMany()
-  var customerList = await prisma.customer.findMany()
-  var supplierList = await prisma.supplier.findMany()
-  var itemList = await prisma.item.findMany()
-  var roleList = await prisma.role.findMany()
-  return {
-    organizationList,
-    notesList,
-    requestList,
-    customerList,
-    supplierList,
-    itemList,
-    roleList,
   }
 }

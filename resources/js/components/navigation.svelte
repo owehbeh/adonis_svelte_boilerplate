@@ -108,7 +108,7 @@
       </div>
     </div>
     <!-- PAGE CONTENT -->
-    <article class="prose max-w-none hover:prose-a:text-blue-900">
+    <article class="prose max-w-none">
       <slot />
     </article>
   </div>

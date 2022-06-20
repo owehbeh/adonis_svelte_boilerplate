@@ -90,6 +90,28 @@ Route.group(() => {
 })
   .prefix('notes/')
   .middleware(['auth'])
+
+/* -------------------------------- SUPPLIER -------------------------------- */
+Route.group(() => {
+  Route.get('/', 'SuppliersController.supplierListView')
+  Route.get('/:id', 'SuppliersController.supplierSingleView')
+  Route.get('/edit/:id?', 'SuppliersController.supplierEditAddView')
+  Route.post('/:id?', 'SuppliersController.supplierEditAdd')
+  Route.delete('/:id?', 'SuppliersController.supplierDelete')
+})
+  .prefix('suppliers/')
+  .middleware(['auth'])
+/* -------------------------------- CUSTOMER -------------------------------- */
+Route.group(() => {
+  Route.get('/', 'CustomersController.customerListView')
+  Route.get('/:id', 'CustomersController.customerSingleView')
+  Route.get('/edit/:id?', 'CustomersController.customerEditAddView')
+  Route.post('/:id?', 'CustomersController.customerEditAdd')
+  Route.delete('/:id?', 'CustomersController.customerDelete')
+})
+  .prefix('customers/')
+  .middleware(['auth'])
+
 /* --------------------------------- TESTING -------------------------------- */
 Route.get('/pizza', async ({ inertia }) => {
   return inertia.render('pizza', { text: 'Pizza' })

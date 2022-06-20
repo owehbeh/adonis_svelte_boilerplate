@@ -3,7 +3,6 @@
   import MainLayout from './../../layouts/main.svelte'
   import { decodeProps, parseDbDate } from '../../helpers.js'
   import { page } from '@inertiajs/inertia-svelte'
-  import User from '../admin/user.svelte'
   let DATA = decodeProps($page.props.data)
   const user = $page.props.user
 </script>
@@ -12,47 +11,57 @@
   <div style="margin:20px">
     <h2>
       {txt('User')}
-      <button href="/users/edit/{user.id}" class="btn btn-square btn-outline btn-sm">
-        <span class="material-icons"> edit </span>
-      </button>
+      <a href="/users/edit/{user.id}" class="btn btn-square btn-outline btn-sm">
+        <span class="material-icons"> {txt('edit')} </span>
+      </a>
     </h2>
-    <div class="flex flex-wrap -mx-2 overflow-hidden">
+    <div class="flex flex-wrap -mx-2">
+      <!-- id -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('id')}</h4>
         <p>{user.id}</p>
       </div>
+      <!-- name -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('name')}</h4>
         <p>{user.name}</p>
       </div>
+      <!-- email -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('email')}</h4>
         <p>{user.email}</p>
       </div>
+      <!-- createdAt -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('createdAt')}</h4>
         <p>{user.createdAt}</p>
       </div>
+      <!-- updatedAt -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('updatedAt')}</h4>
         <p>{user.updatedAt}</p>
       </div>
+      <!-- validated -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('validated')}</h4>
         <p>{user.validated}</p>
       </div>
+      <!-- password -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('password')}</h4>
         <p>{user.password}</p>
       </div>
+      <!-- rememberMeToken -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('rememberMeToken')}</h4>
         <p>{user.rememberMeToken}</p>
       </div>
+      <!-- superAdmin -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('superAdmin')}</h4>
         <p>{user.superAdmin}</p>
       </div>
+      <!-- notes -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('notes')}</h4>
         <p>
@@ -60,10 +69,12 @@
           >
         </p>
       </div>
+      <!-- organization -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('organization')}</h4>
-        <p><a href="/organizations/{user.organization.id}">{user.organization.id}</a></p>
+        <p><a href="/organizations/{user.organization.id}">{user.organization.name}</a></p>
       </div>
+      <!-- request -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('request')}</h4>
         <p>
@@ -72,6 +83,7 @@
           >
         </p>
       </div>
+      <!-- customer -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('customer')}</h4>
         <p>
@@ -80,6 +92,7 @@
           >
         </p>
       </div>
+      <!-- supplier -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('supplier')}</h4>
         <p>
@@ -88,12 +101,14 @@
           >
         </p>
       </div>
+      <!-- item -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('item')}</h4>
         <p>
           <a href="#user-item-modal" class="cursor-pointer">{txt('View')} ({user.item?.length})</a>
         </p>
       </div>
+      <!-- role -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('role')}</h4>
         <p><a href="/roles/{user.role.id}">{user.role.id}</a></p>
@@ -105,7 +120,7 @@
         <h3 class="font-bold text-lg">{txt('notes')}</h3>
         <ul class="menu p-2">
           {#each user.notes as notesItem}
-            <li class="m-0"><a href="/notes/{notesItem.id}" class="m-0">{notesItem.id}</a></li>
+            <li class="m-0"><a href="/notess/{notesItem.id}" class="m-0">{notesItem.title}</a></li>
           {/each}
         </ul>
         <div class="modal-action">
@@ -119,7 +134,9 @@
         <h3 class="font-bold text-lg">{txt('request')}</h3>
         <ul class="menu p-2">
           {#each user.request as requestItem}
-            <li class="m-0"><a href="/requests/requestItem.id" class="m-0">{requestItem.id}</a></li>
+            <li class="m-0">
+              <a href="/requests/{requestItem.id}" class="m-0">{requestItem.id}</a>
+            </li>
           {/each}
         </ul>
         <div class="modal-action">
@@ -134,7 +151,7 @@
         <ul class="menu p-2">
           {#each user.customer as customerItem}
             <li class="m-0">
-              <a href="/customers/customerItem.id" class="m-0">{customerItem.id}</a>
+              <a href="/customers/{customerItem.id}" class="m-0">{customerItem.id}</a>
             </li>
           {/each}
         </ul>
@@ -150,7 +167,7 @@
         <ul class="menu p-2">
           {#each user.supplier as supplierItem}
             <li class="m-0">
-              <a href="/suppliers/supplierItem.id" class="m-0">{supplierItem.id}</a>
+              <a href="/suppliers/{supplierItem.id}" class="m-0">{supplierItem.id}</a>
             </li>
           {/each}
         </ul>
@@ -165,7 +182,7 @@
         <h3 class="font-bold text-lg">{txt('item')}</h3>
         <ul class="menu p-2">
           {#each user.item as itemItem}
-            <li class="m-0"><a href="/items/itemItem.id" class="m-0">{itemItem.id}</a></li>
+            <li class="m-0"><a href="/items/{itemItem.id}" class="m-0">{itemItem.id}</a></li>
           {/each}
         </ul>
         <div class="modal-action">

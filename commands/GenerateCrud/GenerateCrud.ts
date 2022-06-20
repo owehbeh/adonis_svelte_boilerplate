@@ -38,6 +38,10 @@ export default class GenerateCrud extends BaseCommand {
     const listViewTemplateName = `list.svelte`
     const singleViewTemplateName = `single.svelte`
     const editAddViewTemplateName = `edit_add.svelte`
+    const formTextBlockTemplateName = `blocks/form_text_block.svelte`
+    const formSelectBlockTemplateName = `blocks/form_select_block.svelte`
+    const formMultiSelectBlockTemplateName = `blocks/form_multiselect_block.svelte`
+    const formCheckboxBlockTemplateName = `blocks/form_checkbox_block.svelte`
     const singleTextBlockTemplateName = `blocks/single_text_block.svelte`
     const modalListBlockTemplateName = `blocks/modal_list_block.svelte`
     const controllerTemplateName = `controller.ts`
@@ -62,6 +66,10 @@ export default class GenerateCrud extends BaseCommand {
       listViewTemplateName,
       singleViewTemplateName,
       editAddViewTemplateName,
+      formTextBlockTemplateName,
+      formSelectBlockTemplateName,
+      formMultiSelectBlockTemplateName,
+      formCheckboxBlockTemplateName,
       singleTextBlockTemplateName,
       modalListBlockTemplateName,
       controllerTemplateName,
@@ -84,7 +92,7 @@ export default class GenerateCrud extends BaseCommand {
     // SECTION SINGLE VIEW
     myValues['generatedSingleViewPath'] = this.generateSingleView(myValues)
     // SECTION EDIT/ADD VIEW
-    myValues['generatedEditAddViewPath'] = ''
+    myValues['generatedEditAddViewPath'] = this.generateEditAddView(myValues)
     // SECTION PERMISSIONS
     this.updatePermissions(myValues)
     // SECTION CONTROLLER
@@ -162,11 +170,41 @@ export default class GenerateCrud extends BaseCommand {
     }
     // Build relations query include string
     let modelRelations = ''
+    let relationLists = ''
+    let editRelationVars = ''
+    let editRelationVarsValues = ''
+    let editRelationVarsUpdate = ''
+    let editRelationVarsCreate = ''
     Object.keys(val.myModel.properties).forEach((prop) => {
+      if (prop === 'id') return
       const currentProp = val.myModel.properties[prop]
       const isTypeOfArray = currentProp.type && currentProp.type === 'array'
       const isTypeOfAnyOf = currentProp.anyOf
-      if (isTypeOfArray || isTypeOfAnyOf) modelRelations += `${prop}:true, `
+      const isTypeOfString =
+        currentProp.type && (currentProp.type === 'string' || currentProp.type[0] === 'string')
+      const isTypeOfNumber =
+        currentProp.type && (currentProp.type === 'number' || currentProp.type[0] === 'number')
+      const isTypeOfBoolean =
+        currentProp.type && (currentProp.type === 'boolean' || currentProp.type[0] === 'boolean')
+      if (isTypeOfArray || isTypeOfAnyOf) {
+        modelRelations += `${prop}:true, `
+        relationLists += `relations['${prop}List'] = await prisma.${prop}.findMany()\n`
+        if (isTypeOfArray) {
+          editRelationVarsValues += `if (${prop}) ${prop} = ${prop}.split(',').map((x) => ({ id: x }))\nelse ${prop} = []\n`
+          editRelationVarsUpdate += `${prop}: {set: [], connect: ${prop},},`
+          editRelationVarsCreate += `${prop}: {connect: ${prop},},`
+        } else {
+          editRelationVarsCreate += `${prop}Id: ${prop},\n`
+          editRelationVarsUpdate += `${prop}Id: ${prop},\n`
+        }
+      } else if (isTypeOfString || isTypeOfNumber) {
+        editRelationVarsUpdate += `${prop},`
+        editRelationVarsCreate += `${prop},`
+      } else if (isTypeOfBoolean) {
+        editRelationVarsUpdate += `${prop}:${prop} ? true : false,`
+        editRelationVarsCreate += `${prop}:${prop} ? true : false,`
+      }
+      editRelationVars += `${prop}, `
     })
     // Create list content
     const controllerContent = controllerTemplate({
@@ -182,6 +220,11 @@ export default class GenerateCrud extends BaseCommand {
       )}`,
       controller_name: val.controllerName,
       model_relations: modelRelations,
+      relation_lists: relationLists,
+      edit_relation_vars: editRelationVars,
+      edit_relation_vars_update: editRelationVarsUpdate,
+      edit_relation_vars_create: editRelationVarsCreate,
+      edit_relation_vars_values: editRelationVarsValues,
     })
     // Write content to disk
     fs.writeFileSync(
@@ -332,6 +375,90 @@ export default class GenerateCrud extends BaseCommand {
       }
     )
     return generatedSingleViewPath
+  }
+
+  private generateEditAddView(val) {
+    // Load single view template file
+    var editAddViewTemplateFile = fs.readFileSync(
+      `${val.templatesPath}/${val.editAddViewTemplateName}`,
+      'utf-8'
+    )
+    const editAddViewTemplateHandlebar = Handlebars.compile(editAddViewTemplateFile, {
+      noEscape: true,
+    })
+    let pageFormContent = ''
+    Object.keys(val.myModelProps).forEach((propKey) => {
+      // Load Page form content for props
+      let tempBlockTemplateFile
+      const currentProperty = val.myModelProps[propKey]
+      switch (currentProperty.type) {
+        case 'number':
+        case 'string':
+          tempBlockTemplateFile = fs.readFileSync(
+            `${val.templatesPath}/${val.formTextBlockTemplateName}`,
+            'utf-8'
+          )
+          break
+        case 'boolean':
+          tempBlockTemplateFile = fs.readFileSync(
+            `${val.templatesPath}/${val.formCheckboxBlockTemplateName}`,
+            'utf-8'
+          )
+          break
+        case 'array':
+          tempBlockTemplateFile = fs.readFileSync(
+            `${val.templatesPath}/${val.formMultiSelectBlockTemplateName}`,
+            'utf-8'
+          )
+          break
+        case Array:
+          tempBlockTemplateFile = fs.readFileSync(
+            `${val.templatesPath}/${val.formMultiSelectBlockTemplateName}`,
+            'utf-8'
+          )
+          break
+        default:
+          if (currentProperty.anyOf)
+            tempBlockTemplateFile = fs.readFileSync(
+              `${val.templatesPath}/${val.formSelectBlockTemplateName}`,
+              'utf-8'
+            )
+          else
+            tempBlockTemplateFile = fs.readFileSync(
+              `${val.templatesPath}/${val.formTextBlockTemplateName}`,
+              'utf-8'
+            )
+          break
+      }
+      const tempBlockTemplateHandlebar = Handlebars.compile(tempBlockTemplateFile, {
+        noEscape: true,
+      })
+      pageFormContent += tempBlockTemplateHandlebar({
+        prop_name: propKey,
+        model_name: val.myModelName,
+      })
+    })
+    // Create single content
+    const editAddViewContent = editAddViewTemplateHandlebar({
+      page_form_content: pageFormContent,
+      model_name: val.myModelName,
+      model_name_title: val.myModelTitle,
+    })
+    // Make sure path sxist
+    ensureExists(`${val.viewsPagesPath}/${val.myModelName}/`)
+    // Write content to disk
+    const generatedEditAddViewPath = `${val.viewsPagesPath}/${val.myModelName}/${val.generatedEditAddViewName}`
+    fs.writeFileSync(
+      generatedEditAddViewPath,
+      editAddViewContent,
+      { enconding: null },
+      function (err) {
+        if (err) {
+          return console.log(err)
+        }
+      }
+    )
+    return generatedEditAddViewPath
   }
 }
 
