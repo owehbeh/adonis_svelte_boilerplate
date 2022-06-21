@@ -101,8 +101,8 @@ export default class RenameMeUsersController {
       update: {
         name,
         email,
-        createdAt,
-        updatedAt,
+        createdAt: createdAt || undefined,
+        updatedAt: updatedAt || undefined,
         validated: validated ? true : false,
         password,
         rememberMeToken,
@@ -118,8 +118,8 @@ export default class RenameMeUsersController {
       create: {
         name,
         email,
-        createdAt,
-        updatedAt,
+        createdAt: createdAt || undefined,
+        updatedAt: updatedAt || undefined,
         validated: validated ? true : false,
         password,
         rememberMeToken,
@@ -133,6 +133,6 @@ export default class RenameMeUsersController {
         roleId: role,
       },
     })
-    return ctx.response.redirect(`/users/${userId}`)
+    return ctx.response.redirect(`/users/${user.id}`)
   }
 }

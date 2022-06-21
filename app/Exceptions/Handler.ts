@@ -33,8 +33,8 @@ export default class ExceptionHandler extends HttpExceptionHandler {
     /**
      * Self handle the validation exception
      */
-    await FeedbackHelper.handleError(ctx, error)
-    return super.handle(error, ctx)
+    return await FeedbackHelper.handleError(ctx, error)
+    // return super.handle(error, ctx)
 
     // /**
     //  * Forward rest of the exceptions to the parent class
