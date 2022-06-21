@@ -253,36 +253,17 @@ export default class GenerateCrud extends BaseCommand {
       const currentProperty = val.myModelProps[propKey]
       tableTitles += `<th>{txt('${propKey}')}</th>\n`
       let valueToSet = ''
-      if (currentProperty.type === 'number' || currentProperty.type === 'string') {
-      }
-      if (currentProperty.type === 'boolean') {
-      }
-      if (currentProperty.type === 'array') {
-      }
-      if (currentProperty.type === 'boolean') {
-      }
-      if (currentProperty.anyOf) {
-      }
-      if (Array.isArray(currentProperty.type)) {
-      }
-      switch (currentProperty.type) {
-        case 'string':
-          valueToSet = `<td><a href="/${val.myModelName}s/{${val.myModelName}.id}">{${val.myModelName}.${propKey}}</a></td>\n`
-          break
-        case 'boolean':
-          valueToSet = `<td>{${val.myModelName}.${propKey}}</td>\n`
-          break
-        case 'array':
-          valueToSet = `<td>{${val.myModelName}.${propKey}?.length}</td>\n`
-          break
-        case Array:
-          valueToSet = `<td>{${val.myModelName}.${propKey}?.length}</td>\n`
-          break
-        default:
-          if (currentProperty.anyOf)
-            valueToSet = `<td><a href="/${propKey}s/{${val.myModelName}.${propKey}.id}">{${val.myModelName}.${propKey}.id}</a></td>\n`
-          else valueToSet = `<td>{${val.myModelName}.${propKey}}</td>\n`
-          break
+      const { isNumber, isString, isBoolean } = getPropertyType(currentProperty)
+      if (isNumber || isString) {
+        valueToSet = `<td><a href="/${val.myModelName}s/{${val.myModelName}.id}">{${val.myModelName}.${propKey}}</a></td>\n`
+      } else if (isBoolean) {
+        valueToSet = `<td>{${val.myModelName}.${propKey}}</td>\n`
+      } else if (currentProperty.type === 'array') {
+        valueToSet = `<td>{${val.myModelName}.${propKey}?.length}</td>\n`
+      } else if (currentProperty.anyOf) {
+        valueToSet = `<td><a href="/${propKey}s/{${val.myModelName}.${propKey}.id}">{${val.myModelName}.${propKey}.id}</a></td>\n`
+      } else {
+        valueToSet = `<td>{${val.myModelName}.${propKey}}</td>\n`
       }
       tableValues += valueToSet
     })
@@ -337,40 +318,21 @@ export default class GenerateCrud extends BaseCommand {
     Object.keys(val.myModelProps).forEach((propKey) => {
       const currentProperty = val.myModelProps[propKey]
       let valueToSet = ''
-      if (currentProperty.type === 'number' || currentProperty.type === 'string') {
-      }
-      if (currentProperty.type === 'boolean') {
-      }
-      if (currentProperty.type === 'array') {
-      }
-      if (currentProperty.type === 'boolean') {
-      }
-      if (currentProperty.anyOf) {
-      }
-      if (Array.isArray(currentProperty.type)) {
-      }
-      switch (currentProperty.type) {
-        case 'string':
-          valueToSet = `{${val.myModelName}.${propKey}}`
-          break
-        case 'boolean':
-          valueToSet = `{${val.myModelName}.${propKey}}`
-          break
-        case 'array':
-          valueToSet = `<a href="#${val.myModelName}-${propKey}-modal" class="cursor-pointer">{txt('View')} ({${val.myModelName}.${propKey}?.length})</a>`
-          modalsContent += modalListBlockTemplateHandlebar({
-            model_name: val.myModelName,
-            prop_name: propKey,
-          })
-          break
-        case Array:
-          valueToSet = `{${val.myModelName}.${propKey}?.length}`
-          break
-        default:
-          if (currentProperty.anyOf)
-            valueToSet = `<a href="/${propKey}s/{${val.myModelName}.${propKey}.id}">{${val.myModelName}.${propKey}.id}</a>`
-          else valueToSet = `{${val.myModelName}.${propKey}}`
-          break
+      const { isNumber, isString, isBoolean } = getPropertyType(currentProperty)
+      if (isNumber || isString) {
+        valueToSet = `{${val.myModelName}.${propKey}}`
+      } else if (isBoolean) {
+        valueToSet = `{${val.myModelName}.${propKey}}`
+      } else if (currentProperty.type === 'array') {
+        valueToSet = `<a href="#${val.myModelName}-${propKey}-modal" class="cursor-pointer">{txt('View')} ({${val.myModelName}.${propKey}?.length})</a>`
+        modalsContent += modalListBlockTemplateHandlebar({
+          model_name: val.myModelName,
+          prop_name: propKey,
+        })
+      } else if (currentProperty.anyOf) {
+        valueToSet = `<a href="/${propKey}s/{${val.myModelName}.${propKey}.id}">{${val.myModelName}.${propKey}.id}</a>`
+      } else {
+        valueToSet = `{${val.myModelName}.${propKey}}`
       }
       pageTextContent += singleTextBlockTemplateHandlebar({
         prop_name: propKey,
@@ -415,17 +377,7 @@ export default class GenerateCrud extends BaseCommand {
       // Load Page form content for props
       let tempBlockTemplateFile
       const currentProperty = val.myModelProps[propKey]
-      const isArrayType = Array.isArray(currentProperty.type)
-      const isNumber = isArrayType
-        ? currentProperty.type[0] === 'number'
-        : currentProperty.type === 'number'
-      const isString = isArrayType
-        ? currentProperty.type[0] === 'string'
-        : currentProperty.type === 'string'
-      const isBoolean = isArrayType
-        ? currentProperty.type[0] === 'boolean'
-        : currentProperty.type === 'boolean'
-      console.log({ currentProperty, isArrayType, isNumber, isString, isBoolean })
+      const { isNumber, isString, isBoolean } = getPropertyType(currentProperty)
       if (isNumber || isString) {
         tempBlockTemplateFile = fs.readFileSync(
           `${val.templatesPath}/${val.formTextBlockTemplateName}`,
@@ -482,6 +434,20 @@ export default class GenerateCrud extends BaseCommand {
     )
     return generatedEditAddViewPath
   }
+}
+
+function getPropertyType(currentProperty: any) {
+  const isArrayType = Array.isArray(currentProperty.type)
+  const isNumber = isArrayType
+    ? currentProperty.type[0] === 'number'
+    : currentProperty.type === 'number'
+  const isString = isArrayType
+    ? currentProperty.type[0] === 'string'
+    : currentProperty.type === 'string'
+  const isBoolean = isArrayType
+    ? currentProperty.type[0] === 'boolean'
+    : currentProperty.type === 'boolean'
+  return { isNumber, isString, isBoolean }
 }
 
 /* -------------------------------------------------------------------------- */
