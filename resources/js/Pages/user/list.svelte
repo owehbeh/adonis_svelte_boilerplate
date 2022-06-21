@@ -44,7 +44,7 @@
 <td><a href="/users/{user.id}">{user.updatedAt}</a></td>
 <td>{user.validated}</td>
 <td><a href="/users/{user.id}">{user.password}</a></td>
-<td>{user.rememberMeToken}</td>
+<td><a href="/users/{user.id}">{user.rememberMeToken}</a></td>
 <td>{user.superAdmin}</td>
 <td>{user.notes?.length}</td>
 <td><a href="/organizations/{user.organization.id}">{user.organization.id}</a></td>

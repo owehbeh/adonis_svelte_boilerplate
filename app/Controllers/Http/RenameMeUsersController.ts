@@ -50,14 +50,15 @@ export default class RenameMeUsersController {
           role: true,
         },
       })
-      relations['notesList'] = await prisma.note.findMany()
-      relations['organizationList'] = await prisma.organization.findMany()
-      relations['requestList'] = await prisma.request.findMany()
-      relations['customerList'] = await prisma.customer.findMany()
-      relations['supplierList'] = await prisma.supplier.findMany()
-      relations['itemList'] = await prisma.item.findMany()
-      relations['roleList'] = await prisma.role.findMany()
     }
+    relations['notesList'] = await prisma.note.findMany()
+    relations['organizationList'] = await prisma.organization.findMany()
+    relations['requestList'] = await prisma.request.findMany()
+    relations['customerList'] = await prisma.customer.findMany()
+    relations['supplierList'] = await prisma.supplier.findMany()
+    relations['itemList'] = await prisma.item.findMany()
+    relations['roleList'] = await prisma.role.findMany()
+
     return ctx.inertia.render('user/editAdd', {
       user,
       relations,

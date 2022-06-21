@@ -8,7 +8,7 @@
       name="{{prop_name}}"
       type="checkbox"
       class="checkbox"
-      bind:checked={ {{model_name}}.{{prop_name}} }
+      checked={ {{model_name}}?.{{prop_name}} }
     />
   </div>
 </div>

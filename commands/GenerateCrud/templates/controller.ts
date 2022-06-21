@@ -26,8 +26,8 @@ export default class {{controller_name}} {
         where: { id: {{ model_name }}Id },
         include: { {{model_relations}} }
       })
-      {{relation_lists}}
     }
+    {{relation_lists}}
     return ctx.inertia.render('{{ model_name }}/editAdd', {
       {{ model_name }},
       relations,

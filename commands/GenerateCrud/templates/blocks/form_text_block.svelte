@@ -9,7 +9,7 @@
       name="{{prop_name}}"
       placeholder="{txt('Insert')} {txt('{{prop_name}}')}"
       class="input input-bordered w-full max-w-xs"
-      value={ {{model_name}}.{{prop_name}} }
+      value={ {{model_name}}?.{{prop_name}} || '' }
     />
     <label class="label">
       <span class="label-text-alt">{$page.props.errors?.{{prop_name}} || ''}</span>

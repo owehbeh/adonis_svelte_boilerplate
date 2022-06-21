@@ -8,7 +8,7 @@
       {#each relations.{{prop_name}}List as {{prop_name}} }
         <option
           value={ {{prop_name}}.id }
-          selected={ {{model_name}}.{{prop_name}}.map((x) => x.id).indexOf({{prop_name}}.id) != -1 ? 'selected' : ''}
+          selected={ {{model_name}}?.{{prop_name}}.map((x) => x.id).indexOf({{prop_name}}.id) != -1 ? 'selected' : ''}
           >{ {{prop_name}}.id }</option
         >
       {/each}

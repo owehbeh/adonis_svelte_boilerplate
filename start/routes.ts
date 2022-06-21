@@ -60,11 +60,11 @@ Route.group(() => {
 /* ---------------------------------- USER ---------------------------------- */
 
 Route.group(() => {
-  Route.get('/', 'RenameMeUsersController.userListView')
-  Route.get('/:id', 'RenameMeUsersController.userSingleView')
   Route.get('/edit/:id?', 'RenameMeUsersController.userEditAddView')
   Route.post('/edit/:id?', 'RenameMeUsersController.userEditAdd')
   Route.delete('/:id?', 'RenameMeUsersController.userDelete')
+  Route.get('/', 'RenameMeUsersController.userListView')
+  Route.get('/:id', 'RenameMeUsersController.userSingleView')
 })
   .prefix('users/')
   .middleware(['auth'])

@@ -13,7 +13,7 @@
 <MainLayout myData={DATA}>
   <div style="margin:20px">
     <h2>{txt('{{model_name_title}}')}</h2>
-    <form action="/users/edit/{ {{model_name}}.id }" method="POST">
+    <form action="/users/edit/{ {{model_name}}?.id || '' }" method="POST">
       <div class="flex flex-wrap -mx-2">
         {{page_form_content}}
       </div>

@@ -13,7 +13,7 @@
 <MainLayout myData={DATA}>
   <div style="margin:20px">
     <h2>{txt('User')}</h2>
-    <form action="/users/edit/{ user.id }" method="POST">
+    <form action="/users/edit/{ user?.id || '' }" method="POST">
       <div class="flex flex-wrap -mx-2">
         <!--  STRING/NUMBER | id -->
 <div class="my-2 px-2 w-1/3 overflow-hidden">
@@ -26,7 +26,7 @@
       name="id"
       placeholder="{txt('Insert')} {txt('id')}"
       class="input input-bordered w-full max-w-xs"
-      value={ user.id }
+      value={ user?.id || '' }
     />
     <label class="label">
       <span class="label-text-alt">{$page.props.errors?.id || ''}</span>
@@ -44,7 +44,7 @@
       name="name"
       placeholder="{txt('Insert')} {txt('name')}"
       class="input input-bordered w-full max-w-xs"
-      value={ user.name }
+      value={ user?.name || '' }
     />
     <label class="label">
       <span class="label-text-alt">{$page.props.errors?.name || ''}</span>
@@ -62,7 +62,7 @@
       name="email"
       placeholder="{txt('Insert')} {txt('email')}"
       class="input input-bordered w-full max-w-xs"
-      value={ user.email }
+      value={ user?.email || '' }
     />
     <label class="label">
       <span class="label-text-alt">{$page.props.errors?.email || ''}</span>
@@ -80,7 +80,7 @@
       name="createdAt"
       placeholder="{txt('Insert')} {txt('createdAt')}"
       class="input input-bordered w-full max-w-xs"
-      value={ user.createdAt }
+      value={ user?.createdAt || '' }
     />
     <label class="label">
       <span class="label-text-alt">{$page.props.errors?.createdAt || ''}</span>
@@ -98,7 +98,7 @@
       name="updatedAt"
       placeholder="{txt('Insert')} {txt('updatedAt')}"
       class="input input-bordered w-full max-w-xs"
-      value={ user.updatedAt }
+      value={ user?.updatedAt || '' }
     />
     <label class="label">
       <span class="label-text-alt">{$page.props.errors?.updatedAt || ''}</span>
@@ -115,7 +115,7 @@
       name="validated"
       type="checkbox"
       class="checkbox"
-      bind:checked={ user.validated }
+      checked={ user?.validated }
     />
   </div>
 </div>
@@ -130,7 +130,7 @@
       name="password"
       placeholder="{txt('Insert')} {txt('password')}"
       class="input input-bordered w-full max-w-xs"
-      value={ user.password }
+      value={ user?.password || '' }
     />
     <label class="label">
       <span class="label-text-alt">{$page.props.errors?.password || ''}</span>
@@ -148,7 +148,7 @@
       name="rememberMeToken"
       placeholder="{txt('Insert')} {txt('rememberMeToken')}"
       class="input input-bordered w-full max-w-xs"
-      value={ user.rememberMeToken }
+      value={ user?.rememberMeToken || '' }
     />
     <label class="label">
       <span class="label-text-alt">{$page.props.errors?.rememberMeToken || ''}</span>
@@ -165,7 +165,7 @@
       name="superAdmin"
       type="checkbox"
       class="checkbox"
-      bind:checked={ user.superAdmin }
+      checked={ user?.superAdmin }
     />
   </div>
 </div>
@@ -179,7 +179,7 @@
       {#each relations.notesList as notes }
         <option
           value={ notes.id }
-          selected={ user.notes.map((x) => x.id).indexOf(notes.id) != -1 ? 'selected' : ''}
+          selected={ user?.notes.map((x) => x.id).indexOf(notes.id) != -1 ? 'selected' : ''}
           >{ notes.id }</option
         >
       {/each}
@@ -208,7 +208,7 @@
       {#each relations.requestList as request }
         <option
           value={ request.id }
-          selected={ user.request.map((x) => x.id).indexOf(request.id) != -1 ? 'selected' : ''}
+          selected={ user?.request.map((x) => x.id).indexOf(request.id) != -1 ? 'selected' : ''}
           >{ request.id }</option
         >
       {/each}
@@ -225,7 +225,7 @@
       {#each relations.customerList as customer }
         <option
           value={ customer.id }
-          selected={ user.customer.map((x) => x.id).indexOf(customer.id) != -1 ? 'selected' : ''}
+          selected={ user?.customer.map((x) => x.id).indexOf(customer.id) != -1 ? 'selected' : ''}
           >{ customer.id }</option
         >
       {/each}
@@ -242,7 +242,7 @@
       {#each relations.supplierList as supplier }
         <option
           value={ supplier.id }
-          selected={ user.supplier.map((x) => x.id).indexOf(supplier.id) != -1 ? 'selected' : ''}
+          selected={ user?.supplier.map((x) => x.id).indexOf(supplier.id) != -1 ? 'selected' : ''}
           >{ supplier.id }</option
         >
       {/each}
@@ -259,7 +259,7 @@
       {#each relations.itemList as item }
         <option
           value={ item.id }
-          selected={ user.item.map((x) => x.id).indexOf(item.id) != -1 ? 'selected' : ''}
+          selected={ user?.item.map((x) => x.id).indexOf(item.id) != -1 ? 'selected' : ''}
           >{ item.id }</option
         >
       {/each}
