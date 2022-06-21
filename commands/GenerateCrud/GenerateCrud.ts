@@ -253,6 +253,18 @@ export default class GenerateCrud extends BaseCommand {
       const currentProperty = val.myModelProps[propKey]
       tableTitles += `<th>{txt('${propKey}')}</th>\n`
       let valueToSet = ''
+      if (currentProperty.type === 'number' || currentProperty.type === 'string') {
+      }
+      if (currentProperty.type === 'boolean') {
+      }
+      if (currentProperty.type === 'array') {
+      }
+      if (currentProperty.type === 'boolean') {
+      }
+      if (currentProperty.anyOf) {
+      }
+      if (Array.isArray(currentProperty.type)) {
+      }
       switch (currentProperty.type) {
         case 'string':
           valueToSet = `<td><a href="/${val.myModelName}s/{${val.myModelName}.id}">{${val.myModelName}.${propKey}}</a></td>\n`
@@ -325,6 +337,18 @@ export default class GenerateCrud extends BaseCommand {
     Object.keys(val.myModelProps).forEach((propKey) => {
       const currentProperty = val.myModelProps[propKey]
       let valueToSet = ''
+      if (currentProperty.type === 'number' || currentProperty.type === 'string') {
+      }
+      if (currentProperty.type === 'boolean') {
+      }
+      if (currentProperty.type === 'array') {
+      }
+      if (currentProperty.type === 'boolean') {
+      }
+      if (currentProperty.anyOf) {
+      }
+      if (Array.isArray(currentProperty.type)) {
+      }
       switch (currentProperty.type) {
         case 'string':
           valueToSet = `{${val.myModelName}.${propKey}}`
@@ -391,44 +415,42 @@ export default class GenerateCrud extends BaseCommand {
       // Load Page form content for props
       let tempBlockTemplateFile
       const currentProperty = val.myModelProps[propKey]
-      switch (currentProperty.type) {
-        case 'number':
-        case 'string':
-          tempBlockTemplateFile = fs.readFileSync(
-            `${val.templatesPath}/${val.formTextBlockTemplateName}`,
-            'utf-8'
-          )
-          break
-        case 'boolean':
-          tempBlockTemplateFile = fs.readFileSync(
-            `${val.templatesPath}/${val.formCheckboxBlockTemplateName}`,
-            'utf-8'
-          )
-          break
-        case 'array':
-          tempBlockTemplateFile = fs.readFileSync(
-            `${val.templatesPath}/${val.formMultiSelectBlockTemplateName}`,
-            'utf-8'
-          )
-          break
-        case Array:
-          tempBlockTemplateFile = fs.readFileSync(
-            `${val.templatesPath}/${val.formMultiSelectBlockTemplateName}`,
-            'utf-8'
-          )
-          break
-        default:
-          if (currentProperty.anyOf)
-            tempBlockTemplateFile = fs.readFileSync(
-              `${val.templatesPath}/${val.formSelectBlockTemplateName}`,
-              'utf-8'
-            )
-          else
-            tempBlockTemplateFile = fs.readFileSync(
-              `${val.templatesPath}/${val.formTextBlockTemplateName}`,
-              'utf-8'
-            )
-          break
+      const isArrayType = Array.isArray(currentProperty.type)
+      const isNumber = isArrayType
+        ? currentProperty.type[0] === 'number'
+        : currentProperty.type === 'number'
+      const isString = isArrayType
+        ? currentProperty.type[0] === 'string'
+        : currentProperty.type === 'string'
+      const isBoolean = isArrayType
+        ? currentProperty.type[0] === 'boolean'
+        : currentProperty.type === 'boolean'
+      console.log({ currentProperty, isArrayType, isNumber, isString, isBoolean })
+      if (isNumber || isString) {
+        tempBlockTemplateFile = fs.readFileSync(
+          `${val.templatesPath}/${val.formTextBlockTemplateName}`,
+          'utf-8'
+        )
+      } else if (isBoolean) {
+        tempBlockTemplateFile = fs.readFileSync(
+          `${val.templatesPath}/${val.formCheckboxBlockTemplateName}`,
+          'utf-8'
+        )
+      } else if (currentProperty.type === 'array') {
+        tempBlockTemplateFile = fs.readFileSync(
+          `${val.templatesPath}/${val.formMultiSelectBlockTemplateName}`,
+          'utf-8'
+        )
+      } else if (currentProperty.anyOf) {
+        tempBlockTemplateFile = fs.readFileSync(
+          `${val.templatesPath}/${val.formSelectBlockTemplateName}`,
+          'utf-8'
+        )
+      } else {
+        tempBlockTemplateFile = fs.readFileSync(
+          `${val.templatesPath}/${val.formTextBlockTemplateName}`,
+          'utf-8'
+        )
       }
       const tempBlockTemplateHandlebar = Handlebars.compile(tempBlockTemplateFile, {
         noEscape: true,

@@ -24,7 +24,7 @@ model User {
   password        String
   rememberMeToken String?
   superAdmin      Boolean       @default(false)
-  notes           Note[]
+  note            Note[]
   organization    Organization? @relation(fields: [organizationId], references: [id])
   organizationId  String?
   request         Request[]
