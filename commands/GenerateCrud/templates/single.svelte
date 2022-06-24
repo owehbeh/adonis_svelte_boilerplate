@@ -1,4 +1,5 @@
 <script>
+  import { confirmModal, PostThis } from './../../helpers.js'
   import { txt } from '../../language'
   import MainLayout from './../../layouts/main.svelte'
   import { decodeProps, parseDbDate } from '../../helpers.js'
@@ -11,9 +12,24 @@
   <div style="margin:20px">
     <h2>
       {txt('{{model_name_title}}')}
-      <a href="/users/edit/{ {{model_name}}.id }" class="btn btn-square btn-outline btn-sm">
-        <span class="material-icons"> {txt('edit')} </span>
+      <a href="/{{model_name}}s/edit/{ {{model_name}}.id }" class="btn btn-square btn-outline btn-sm">
+        <span class="material-icons">edit</span>
       </a>
+      <button
+        on:click={() => {
+          confirmModal(
+            `${txt('Deleting')} ${txt('{{model_name_title}}')} ${ {{model_name}}.id}`,
+            txt('Are you sure?'),
+            txt('Delete'),
+            () => {
+              PostThis(`/{{model_name}}s/delete/${ {{model_name}}.id}`, null)
+            }
+          )
+        }}
+        class="btn btn-square btn-outline btn-sm btn-warning"
+      >
+        <span class="material-icons">delete</span>
+      </button>
     </h2>
     <div class="flex flex-wrap -mx-2">
       {{page_text_content}}

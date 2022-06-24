@@ -52,4 +52,10 @@ export default class {{controller_name}} {
     return ctx.response.redirect(`/{{ model_name }}s/${ {{ model_name }}Id}`)
   }
 
+  public async {{ model_name }}Delete(ctx: HttpContextContract) {
+    await prisma.{{ model_name }}.delete({
+      where: { id: ctx.request.params().id },
+    })
+    return ctx.response.redirect('/{{ model_name }}s')
+  }
 }

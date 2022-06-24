@@ -1,7 +1,7 @@
 <script>
   import { txt } from '../../language'
   import MainLayout from './../../layouts/main.svelte'
-  import { decodeProps, parseDbDate } from '../../helpers.js'
+  import { confirmModal, decodeProps, parseDbDate, PostThis } from '../../helpers.js'
   import { page } from '@inertiajs/inertia-svelte'
   let DATA = decodeProps($page.props.data)
 </script>

@@ -72,42 +72,6 @@
             </label>
           </div>
         </div>
-        <!--  STRING/NUMBER | createdAt -->
-        <div class="my-2 px-2 w-1/3 overflow-hidden">
-          <div class="form-control w-full max-w-xs">
-            <label class="label">
-              <span class="label-text">{txt('createdAt')}</span>
-            </label>
-            <input
-              type="text"
-              name="createdAt"
-              placeholder="{txt('Insert')} {txt('createdAt')}"
-              class="input input-bordered w-full max-w-xs"
-              value={user?.createdAt || ''}
-            />
-            <label class="label">
-              <span class="label-text-alt">{$page.props.errors?.createdAt || ''}</span>
-            </label>
-          </div>
-        </div>
-        <!--  STRING/NUMBER | updatedAt -->
-        <div class="my-2 px-2 w-1/3 overflow-hidden">
-          <div class="form-control w-full max-w-xs">
-            <label class="label">
-              <span class="label-text">{txt('updatedAt')}</span>
-            </label>
-            <input
-              type="text"
-              name="updatedAt"
-              placeholder="{txt('Insert')} {txt('updatedAt')}"
-              class="input input-bordered w-full max-w-xs"
-              value={user?.updatedAt || ''}
-            />
-            <label class="label">
-              <span class="label-text-alt">{$page.props.errors?.updatedAt || ''}</span>
-            </label>
-          </div>
-        </div>
         <!--  CHECKBOX | validated -->
         <div class="my-2 px-2 w-1/3 overflow-hidden">
           <div class="form-control w-full max-w-xs">

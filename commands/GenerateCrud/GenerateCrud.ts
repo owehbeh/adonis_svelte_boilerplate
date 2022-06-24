@@ -135,7 +135,7 @@ export default class GenerateCrud extends BaseCommand {
       Route.group(() => {
         Route.get('/edit/:id?', '${val.controllerName}.${val.editAddApiName}')
         Route.post('/edit/:id?', '${val.controllerName}.${val.editAddApiName.replace('View', '')}')
-        Route.delete('/:id?', '${val.controllerName}.${val.deleteApiName}')
+        Route.post('/delete/:id?', '${val.controllerName}.${val.deleteApiName}')
         Route.get('/', '${val.controllerName}.${val.listApiName}')
         Route.get('/:id', '${val.controllerName}.${val.singleApiName}')
       })
@@ -262,6 +262,30 @@ export default class GenerateCrud extends BaseCommand {
       }
       tableValues += valueToSet
     })
+    // Add edit/delete table
+    tableTitles += `<th />\n`
+    tableValues += `
+    <td>
+      <a href="/users/edit/{${val.myModelName}.id}" class="btn btn-square btn-outline btn-sm">
+      <span class="material-icons">edit</span>
+      </a>
+      <button
+        on:click={() => {
+          confirmModal(
+            \`\${txt('Deleting')} \${txt('${val.myModelTitle}')} \${${val.myModelName}.id}\`,
+            'Are you sure?',
+            'Delete',
+            () => {
+              PostThis(\`/${val.myModelName}s/delete/\${${val.myModelName}.id}\`, null)
+            }
+          )
+        }}
+        class="btn btn-square btn-outline btn-sm btn-warning"
+      >
+        <span class="material-icons">delete</span>
+      </button>
+    </td>
+    `
     // Build table val
     // Create list content
     const listViewContent = listViewTemplateHandlebar({
