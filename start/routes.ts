@@ -139,5 +139,5 @@ Route.post('/burger_post', async () => {
       name: 'William',
     },
   })
-  return 'burger_post was called'
+  // return 'burger_post was called'
 })
