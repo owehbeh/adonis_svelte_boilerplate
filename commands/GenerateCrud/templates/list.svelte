@@ -8,7 +8,12 @@
 
 <MainLayout myData={DATA}>
   <div style="margin:20px">
-    <h1>{txt('{{model_name_title}}s')}</h1>
+    <h1>
+      {txt('{{model_name_title}}s')}
+      <a href="/{{model_name}}s/edit" class="btn btn-square btn-outline btn-sm">
+        <span class="material-icons">add</span>
+      </a>
+    </h1>
     <br />
     <div class="overflow-x-auto">
       <table class="table table-zebra w-full">

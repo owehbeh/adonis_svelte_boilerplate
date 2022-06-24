@@ -12,8 +12,14 @@
 
 <MainLayout myData={DATA}>
   <div style="margin:20px">
-    <h2>{txt('{{model_name_title}}')}</h2>
-    <form action="/users/edit/{ {{model_name}}?.id || '' }" method="POST">
+    <h2>
+      <a href="/{{model_name}}s">{txt('{{model_name_title}}s')}</a>
+      {#if {{model_name}} }
+        <span>/</span>
+        <a href="/{{model_name}}s/{ {{model_name}}.id}">{ {{model_name}}.id}</a>
+      {/if}
+    </h2>
+    <form action="/{{model_name}}s/edit/{ {{model_name}}?.id || '' }" method="POST">
       <div class="flex flex-wrap -mx-2">
         {{page_form_content}}
       </div>

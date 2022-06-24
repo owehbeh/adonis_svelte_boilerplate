@@ -82,11 +82,11 @@ Route.group(() => {
 
 /* ---------------------------------- _NOTE ---------------------------------- */
 Route.group(() => {
-  Route.get('/', 'NotesController.noteListView')
-  Route.get('/:id', 'NotesController.noteSingleView')
-  Route.get('/:id?', 'NotesController.noteEditAddView')
-  Route.post('/:id?', 'NotesController.noteEditAdd')
-  Route.delete('/:id?', 'NotesController.noteDelete')
+  Route.get('/edit/:id?', 'RenameMeNotesController.noteEditAddView')
+  Route.post('/edit/:id?', 'RenameMeNotesController.noteEditAdd')
+  Route.post('/delete/:id?', 'RenameMeNotesController.noteDelete')
+  Route.get('/', 'RenameMeNotesController.noteListView')
+  Route.get('/:id', 'RenameMeNotesController.noteSingleView')
 })
   .prefix('notes/')
   .middleware(['auth'])

@@ -11,7 +11,8 @@
 <MainLayout myData={DATA}>
   <div style="margin:20px">
     <h2>
-      {txt('User')}
+      <a href="/users">{txt('User')}</a>
+      <span>/ { user.id}</span>
       <a href="/users/edit/{ user.id }" class="btn btn-square btn-outline btn-sm">
         <span class="material-icons">edit</span>
       </a>
@@ -77,10 +78,10 @@
   <h4>{txt('superAdmin')}</h4>
   <p>{user.superAdmin}</p>
 </div>
-<!-- notes -->
+<!-- note -->
 <div class="my-2 px-2 w-1/4 overflow-hidden">
-  <h4>{txt('notes')}</h4>
-  <p><a href="#user-notes-modal" class="cursor-pointer">{txt('View')} ({user.notes?.length})</a></p>
+  <h4>{txt('note')}</h4>
+  <p><a href="#user-note-modal" class="cursor-pointer">{txt('View')} ({user.note?.length})</a></p>
 </div>
 <!-- organization -->
 <div class="my-2 px-2 w-1/4 overflow-hidden">
@@ -114,13 +115,13 @@
 </div>
 
     </div>
-  <!-- notes modal -->
-<div class="modal modal-bottom sm:modal-middle" id="user-notes-modal">
+  <!-- note modal -->
+<div class="modal modal-bottom sm:modal-middle" id="user-note-modal">
   <div class="modal-box">
-    <h3 class="font-bold text-lg">{txt('notes')}</h3>
+    <h3 class="font-bold text-lg">{txt('note')}</h3>
     <ul class="menu p-2">
-      {#each user.notes as notesItem}
-        <li class="m-0"><a href="/notess/{ notesItem.id }" class="m-0">{ notesItem.id }</a></li>
+      {#each user.note as noteItem}
+        <li class="m-0"><a href="/notes/{ noteItem.id }" class="m-0">{ noteItem.id }</a></li>
       {/each}
     </ul>
     <div class="modal-action">

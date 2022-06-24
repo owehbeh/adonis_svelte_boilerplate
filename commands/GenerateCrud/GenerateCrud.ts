@@ -459,6 +459,7 @@ export default class GenerateCrud extends BaseCommand {
 
 function getPropertyType(currentProperty: any) {
   const isArrayType = Array.isArray(currentProperty.type)
+  if (isArrayType) console.log(currentProperty)
   const isNumber = isArrayType
     ? currentProperty.type[0] === 'number'
     : currentProperty.type === 'number'
@@ -469,7 +470,7 @@ function getPropertyType(currentProperty: any) {
     ? currentProperty.type[0] === 'boolean'
     : currentProperty.type === 'boolean'
   const isTypeOfArray = currentProperty.type && currentProperty.type === 'array'
-  const isTypeOfAnyOf = currentProperty.anyOf
+  const isTypeOfAnyOf = currentProperty.anyOf || currentProperty.$ref
   return { isNumber, isString, isBoolean, isTypeOfArray, isTypeOfAnyOf }
 }
 

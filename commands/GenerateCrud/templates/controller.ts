@@ -49,7 +49,7 @@ export default class {{controller_name}} {
         {{edit_relation_vars_create}}
       },
     })
-    return ctx.response.redirect(`/{{ model_name }}s/${ {{ model_name }}Id}`)
+    return ctx.response.redirect(`/{{ model_name }}s/${ {{ model_name }}.id || ''}`)
   }
 
   public async {{ model_name }}Delete(ctx: HttpContextContract) {

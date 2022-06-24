@@ -38,7 +38,7 @@
           "type": "boolean",
           "default": false
         },
-        "notes": {
+        "note": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/Note"
@@ -131,6 +131,9 @@
           "items": {
             "$ref": "#/definitions/Item"
           }
+        },
+        "organization": {
+          "$ref": "#/definitions/Organization"
         }
       }
     },
@@ -235,6 +238,12 @@
             "$ref": "#/definitions/Warehouse"
           }
         },
+        "taxId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "item": {
           "type": "array",
           "items": {
@@ -292,6 +301,30 @@
           "items": {
             "$ref": "#/definitions/Role"
           }
+        },
+        "Item": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Item"
+          }
+        },
+        "Address": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Address"
+          }
+        },
+        "Warehouse": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Warehouse"
+          }
+        },
+        "Note": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Note"
+          }
         }
       }
     },
@@ -346,6 +379,9 @@
             "number",
             "null"
           ]
+        },
+        "organization": {
+          "$ref": "#/definitions/Organization"
         }
       }
     },
@@ -443,6 +479,9 @@
               "type": "null"
             }
           ]
+        },
+        "organization": {
+          "$ref": "#/definitions/Organization"
         }
       }
     },
@@ -488,6 +527,9 @@
               "type": "null"
             }
           ]
+        },
+        "organization": {
+          "$ref": "#/definitions/Organization"
         }
       }
     }

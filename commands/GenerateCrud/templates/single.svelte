@@ -11,7 +11,8 @@
 <MainLayout myData={DATA}>
   <div style="margin:20px">
     <h2>
-      {txt('{{model_name_title}}')}
+      <a href="/{{model_name}}s">{txt('{{model_name_title}}s')}</a>
+      <span>/ { {{model_name}}.id}</span>
       <a href="/{{model_name}}s/edit/{ {{model_name}}.id }" class="btn btn-square btn-outline btn-sm">
         <span class="material-icons">edit</span>
       </a>

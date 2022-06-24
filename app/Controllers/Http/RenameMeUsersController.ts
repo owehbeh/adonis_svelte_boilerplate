@@ -5,7 +5,7 @@ export default class RenameMeUsersController {
   public async userListView(ctx: HttpContextContract) {
     let userList = await prisma.user.findMany({
       include: {
-        notes: true,
+        note: true,
         organization: true,
         request: true,
         customer: true,
@@ -21,7 +21,7 @@ export default class RenameMeUsersController {
     let user = await prisma.user.findUnique({
       where: { id: ctx.request.params().id },
       include: {
-        notes: true,
+        note: true,
         organization: true,
         request: true,
         customer: true,
@@ -41,7 +41,7 @@ export default class RenameMeUsersController {
       user = await prisma.user.findUnique({
         where: { id: userId },
         include: {
-          notes: true,
+          note: true,
           organization: true,
           request: true,
           customer: true,
@@ -51,7 +51,7 @@ export default class RenameMeUsersController {
         },
       })
     }
-    relations['notesList'] = await prisma.note.findMany()
+    relations['noteList'] = await prisma.note.findMany()
     relations['organizationList'] = await prisma.organization.findMany()
     relations['requestList'] = await prisma.request.findMany()
     relations['customerList'] = await prisma.customer.findMany()
@@ -77,7 +77,7 @@ export default class RenameMeUsersController {
       password,
       rememberMeToken,
       superAdmin,
-      notes,
+      note,
       organization,
       request,
       customer,
@@ -85,8 +85,8 @@ export default class RenameMeUsersController {
       item,
       role,
     } = ctx.request.body()
-    if (notes) notes = notes.split(',').map((x) => ({ id: x }))
-    else notes = []
+    if (note) note = note.split(',').map((x) => ({ id: x }))
+    else note = []
     if (request) request = request.split(',').map((x) => ({ id: x }))
     else request = []
     if (customer) customer = customer.split(',').map((x) => ({ id: x }))
@@ -107,7 +107,7 @@ export default class RenameMeUsersController {
         password,
         rememberMeToken,
         superAdmin: superAdmin ? true : false,
-        notes: { set: [], connect: notes },
+        note: { set: [], connect: note },
         organizationId: organization,
         request: { set: [], connect: request },
         customer: { set: [], connect: customer },
@@ -124,7 +124,7 @@ export default class RenameMeUsersController {
         password,
         rememberMeToken,
         superAdmin: superAdmin ? true : false,
-        notes: { connect: notes },
+        note: { connect: note },
         organizationId: organization,
         request: { connect: request },
         customer: { connect: customer },
@@ -133,7 +133,7 @@ export default class RenameMeUsersController {
         roleId: role,
       },
     })
-    return ctx.response.redirect(`/users/${userId || ''}`)
+    return ctx.response.redirect(`/users/${user.id || ''}`)
   }
 
   public async userDelete(ctx: HttpContextContract) {

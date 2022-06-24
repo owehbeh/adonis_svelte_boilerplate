@@ -8,7 +8,12 @@
 
 <MainLayout myData={DATA}>
   <div style="margin:20px">
-    <h1>{txt('Users')}</h1>
+    <h1>
+      {txt('Users')}
+      <a href="/users/edit" class="btn btn-square btn-outline btn-sm">
+        <span class="material-icons">add</span>
+      </a>
+    </h1>
     <br />
     <div class="overflow-x-auto">
       <table class="table table-zebra w-full">
@@ -24,7 +29,7 @@
 <th>{txt('password')}</th>
 <th>{txt('rememberMeToken')}</th>
 <th>{txt('superAdmin')}</th>
-<th>{txt('notes')}</th>
+<th>{txt('note')}</th>
 <th>{txt('organization')}</th>
 <th>{txt('request')}</th>
 <th>{txt('customer')}</th>
@@ -47,7 +52,7 @@
 <td><a href="/users/{user.id}">{user.password}</a></td>
 <td><a href="/users/{user.id}">{user.rememberMeToken}</a></td>
 <td>{user.superAdmin}</td>
-<td>{user.notes?.length}</td>
+<td>{user.note?.length}</td>
 <td><a href="/organizations/{user.organization.id}">{user.organization.id}</a></td>
 <td>{user.request?.length}</td>
 <td>{user.customer?.length}</td>
