@@ -44,6 +44,7 @@ The need for building fast reactive apps is rising, and having to build and mana
   - ✅ Single page
   - 🔜 Add/Edit page
 - ✅ [Socket](#socket)
+- ✅ [Helpers](#helpers)
 - ✅ [Install](#install)
 - ✅ [Run](#run)
 
@@ -329,6 +330,33 @@ Inside your page_name.svelte
   socket.on('burger_post', (received) => {
     data = received.data
   })
+```
+
+---
+
+## Helpers
+
+### Show a confirmation modal programmatically
+
+```Javascript
+  // Import
+  import { confirmModal } from '../../helpers.js'
+  // Call where needed
+  confirmModal(
+    `Modal Title`,
+    'Modal Content',
+    'Button Text',
+    () => {/** CALLBACK ON BUTTON CLICK */}
+  )
+```
+
+### Submit a POST HTML from programmatically
+
+```Javascript
+  // Import
+  import { PostThis } from '../../helpers.js'
+  // Call where needed
+  PostThis('URL', { data1: data1Val, data2:data2Val... })
 ```
 
 ---

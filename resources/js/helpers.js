@@ -35,6 +35,7 @@ export const confirmModal = (title, content, buttonText, fn) => {
   modal.button.set(buttonText)
   modal.fn.set(fn)
 }
+
 /**
  * Submit an HTML form programmatically
  * @param {String} url The URL of the Post Request to be made

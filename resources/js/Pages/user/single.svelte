@@ -1,5 +1,5 @@
 <script>
-  import { PostThis, postThis } from './../../helpers.js'
+  import { PostThis } from './../../helpers.js'
   import { txt } from '../../language'
   import MainLayout from './../../layouts/main.svelte'
   import { decodeProps, parseDbDate, confirmModal } from '../../helpers.js'
