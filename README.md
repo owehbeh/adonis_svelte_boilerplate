@@ -39,10 +39,11 @@ The need for building fast reactive apps is rising, and having to build and mana
   - ✅ [Roles](#roles)
   - ✅ [Permissions](#permissions)
 - ✅ [Translation](#translation)
-- 🔜 [Code Generation](#code-generation)
-  - ✅ List page
-  - ✅ Single page
-  - 🔜 Add/Edit page
+- ✅ [Code Generation](#code-generation)
+  - ✅ List page + Functionality
+  - ✅ Single page + Functionality
+  - ✅ Add/Edit page + Functionality
+  - ✅ Delete components + Functionality
 - ✅ [Socket](#socket)
 - ✅ [Helpers](#helpers)
 - ✅ [Install](#install)
