@@ -33,11 +33,11 @@ export default class ExceptionHandler extends HttpExceptionHandler {
     /**
      * Self handle the validation exception
      */
-    return await FeedbackHelper.handleError(ctx, error)
-    // return super.handle(error, ctx)
-
-    // /**
-    //  * Forward rest of the exceptions to the parent class
-    //  */
+    switch (error.status) {
+      case 401:
+        return ctx.response.redirect(error.redirectTo)
+      default:
+        return await FeedbackHelper.handleError(ctx, error)
+    }
   }
 }
