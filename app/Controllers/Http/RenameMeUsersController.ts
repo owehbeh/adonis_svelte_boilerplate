@@ -135,4 +135,11 @@ export default class RenameMeUsersController {
     })
     return ctx.response.redirect(`/users/${user.id}`)
   }
+
+  public async userDelete(ctx: HttpContextContract) {
+    await prisma.user.delete({
+      where: { id: ctx.request.params().id },
+    })
+    return ctx.response.redirect('/users')
+  }
 }

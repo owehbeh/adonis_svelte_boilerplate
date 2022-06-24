@@ -55,13 +55,14 @@ export const PostThis = (url, params, csrf) => {
     myTb.value = csrf
     myForm.appendChild(myTb)
   }
-  for (const [key, value] of Object.entries(params)) {
-    myTb = document.createElement('INPUT')
-    myTb.type = 'HIDDEN'
-    myTb.name = key
-    myTb.value = value
-    myForm.appendChild(myTb)
-  }
+  if (params)
+    for (const [key, value] of Object.entries(params)) {
+      myTb = document.createElement('INPUT')
+      myTb.type = 'HIDDEN'
+      myTb.name = key
+      myTb.value = value
+      myForm.appendChild(myTb)
+    }
   document.body.appendChild(myForm)
   myForm.submit()
 }

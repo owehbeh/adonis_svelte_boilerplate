@@ -22,9 +22,7 @@
             'Are you sure?',
             'Delete',
             () => {
-              PostThis('/burger_post', { id: user.id })
-              console.log('deleted user')
-              console.log(user)
+              PostThis(`/users/delete/${user.id}`, null)
             }
           )
         }}

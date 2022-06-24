@@ -20,7 +20,7 @@
   modal.button.subscribe((value) => (modalButtonTextValue = value))
   modal.fn.subscribe((value) => (modalFnValue = value))
   function hideModal() {
-    modal.modalShow.set(false)
+    modal.show.set(false)
   }
   // FORM
 </script>
