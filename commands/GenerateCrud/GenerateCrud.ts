@@ -178,14 +178,8 @@ export default class GenerateCrud extends BaseCommand {
     Object.keys(val.myModel.properties).forEach((prop) => {
       if (prop === 'id') return
       const currentProp = val.myModel.properties[prop]
-      const isTypeOfArray = currentProp.type && currentProp.type === 'array'
-      const isTypeOfAnyOf = currentProp.anyOf
-      const isTypeOfString =
-        currentProp.type && (currentProp.type === 'string' || currentProp.type[0] === 'string')
-      const isTypeOfNumber =
-        currentProp.type && (currentProp.type === 'number' || currentProp.type[0] === 'number')
-      const isTypeOfBoolean =
-        currentProp.type && (currentProp.type === 'boolean' || currentProp.type[0] === 'boolean')
+      const { isNumber, isString, isBoolean, isTypeOfArray, isTypeOfAnyOf } =
+        getPropertyType(currentProp)
       if (isTypeOfArray || isTypeOfAnyOf) {
         modelRelations += `${prop}:true, `
         relationLists += `relations['${prop}List'] = await prisma.${prop}.findMany()\n`
@@ -197,10 +191,10 @@ export default class GenerateCrud extends BaseCommand {
           editRelationVarsCreate += `${prop}Id: ${prop},\n`
           editRelationVarsUpdate += `${prop}Id: ${prop},\n`
         }
-      } else if (isTypeOfString || isTypeOfNumber) {
+      } else if (isString || isNumber) {
         editRelationVarsUpdate += `${prop},`
         editRelationVarsCreate += `${prop},`
-      } else if (isTypeOfBoolean) {
+      } else if (isBoolean) {
         editRelationVarsUpdate += `${prop}:${prop} ? true : false,`
         editRelationVarsCreate += `${prop}:${prop} ? true : false,`
       }
@@ -253,14 +247,15 @@ export default class GenerateCrud extends BaseCommand {
       const currentProperty = val.myModelProps[propKey]
       tableTitles += `<th>{txt('${propKey}')}</th>\n`
       let valueToSet = ''
-      const { isNumber, isString, isBoolean } = getPropertyType(currentProperty)
+      const { isNumber, isString, isBoolean, isTypeOfArray, isTypeOfAnyOf } =
+        getPropertyType(currentProperty)
       if (isNumber || isString) {
         valueToSet = `<td><a href="/${val.myModelName}s/{${val.myModelName}.id}">{${val.myModelName}.${propKey}}</a></td>\n`
       } else if (isBoolean) {
         valueToSet = `<td>{${val.myModelName}.${propKey}}</td>\n`
-      } else if (currentProperty.type === 'array') {
+      } else if (isTypeOfArray) {
         valueToSet = `<td>{${val.myModelName}.${propKey}?.length}</td>\n`
-      } else if (currentProperty.anyOf) {
+      } else if (isTypeOfAnyOf) {
         valueToSet = `<td><a href="/${propKey}s/{${val.myModelName}.${propKey}.id}">{${val.myModelName}.${propKey}.id}</a></td>\n`
       } else {
         valueToSet = `<td>{${val.myModelName}.${propKey}}</td>\n`
@@ -318,18 +313,19 @@ export default class GenerateCrud extends BaseCommand {
     Object.keys(val.myModelProps).forEach((propKey) => {
       const currentProperty = val.myModelProps[propKey]
       let valueToSet = ''
-      const { isNumber, isString, isBoolean } = getPropertyType(currentProperty)
+      const { isNumber, isString, isBoolean, isTypeOfArray, isTypeOfAnyOf } =
+        getPropertyType(currentProperty)
       if (isNumber || isString) {
         valueToSet = `{${val.myModelName}.${propKey}}`
       } else if (isBoolean) {
         valueToSet = `{${val.myModelName}.${propKey}}`
-      } else if (currentProperty.type === 'array') {
+      } else if (isTypeOfArray) {
         valueToSet = `<a href="#${val.myModelName}-${propKey}-modal" class="cursor-pointer">{txt('View')} ({${val.myModelName}.${propKey}?.length})</a>`
         modalsContent += modalListBlockTemplateHandlebar({
           model_name: val.myModelName,
           prop_name: propKey,
         })
-      } else if (currentProperty.anyOf) {
+      } else if (isTypeOfAnyOf) {
         valueToSet = `<a href="/${propKey}s/{${val.myModelName}.${propKey}.id}">{${val.myModelName}.${propKey}.id}</a>`
       } else {
         valueToSet = `{${val.myModelName}.${propKey}}`
@@ -377,7 +373,8 @@ export default class GenerateCrud extends BaseCommand {
       // Load Page form content for props
       let tempBlockTemplateFile
       const currentProperty = val.myModelProps[propKey]
-      const { isNumber, isString, isBoolean } = getPropertyType(currentProperty)
+      const { isNumber, isString, isBoolean, isTypeOfArray, isTypeOfAnyOf } =
+        getPropertyType(currentProperty)
       if (isNumber || isString) {
         tempBlockTemplateFile = fs.readFileSync(
           `${val.templatesPath}/${val.formTextBlockTemplateName}`,
@@ -388,12 +385,12 @@ export default class GenerateCrud extends BaseCommand {
           `${val.templatesPath}/${val.formCheckboxBlockTemplateName}`,
           'utf-8'
         )
-      } else if (currentProperty.type === 'array') {
+      } else if (isTypeOfArray) {
         tempBlockTemplateFile = fs.readFileSync(
           `${val.templatesPath}/${val.formMultiSelectBlockTemplateName}`,
           'utf-8'
         )
-      } else if (currentProperty.anyOf) {
+      } else if (isTypeOfAnyOf) {
         tempBlockTemplateFile = fs.readFileSync(
           `${val.templatesPath}/${val.formSelectBlockTemplateName}`,
           'utf-8'
@@ -447,7 +444,9 @@ function getPropertyType(currentProperty: any) {
   const isBoolean = isArrayType
     ? currentProperty.type[0] === 'boolean'
     : currentProperty.type === 'boolean'
-  return { isNumber, isString, isBoolean }
+  const isTypeOfArray = currentProperty.type && currentProperty.type === 'array'
+  const isTypeOfAnyOf = currentProperty.anyOf
+  return { isNumber, isString, isBoolean, isTypeOfArray, isTypeOfAnyOf }
 }
 
 /* -------------------------------------------------------------------------- */
