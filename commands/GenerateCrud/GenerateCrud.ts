@@ -266,7 +266,7 @@ export default class GenerateCrud extends BaseCommand {
     tableTitles += `<th />\n`
     tableValues += `
     <td>
-      <a href="/users/edit/{${val.myModelName}.id}" class="btn btn-square btn-outline btn-sm">
+      <a href="/${val.myModelName}s/edit/{${val.myModelName}.id}" class="btn btn-square btn-outline btn-sm">
       <span class="material-icons">edit</span>
       </a>
       <button

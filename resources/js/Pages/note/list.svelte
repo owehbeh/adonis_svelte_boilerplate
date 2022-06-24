@@ -47,7 +47,7 @@
 <td><a href="/organizations/{note.organization.id}">{note.organization.id}</a></td>
 
     <td>
-      <a href="/users/edit/{note.id}" class="btn btn-square btn-outline btn-sm">
+      <a href="/notes/edit/{note.id}" class="btn btn-square btn-outline btn-sm">
       <span class="material-icons">edit</span>
       </a>
       <button
