@@ -33,7 +33,7 @@
             <tr>
               <td><a href="/admin/users/{user.id}">{user.name}</a></td>
               <td><a href="/admin/users/{user.id}">{user.email}</a></td>
-              <td><a href="/roles/{user.role.id}">{user.role.name}</a></td>
+              <td><a href="/roles/{user.role?.id}">{user.role?.name}</a></td>
               <td>{user.validated ? 'Yes' : 'No'}</td>
               <td><a href="/admin/users/{user.id}">{parseDbDate(user.updatedAt)}</a></td>
               <td>

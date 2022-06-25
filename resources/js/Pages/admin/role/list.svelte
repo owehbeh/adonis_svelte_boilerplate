@@ -1,7 +1,7 @@
 <script>
-  import { txt } from '../../language'
-  import MainLayout from './../../layouts/main.svelte'
-  import { confirmModal, decodeProps, parseDbDate, PostThis } from '../../helpers.js'
+  import { txt } from '../../../language'
+  import MainLayout from '../../../layouts/main.svelte'
+  import { confirmModal, decodeProps, parseDbDate, PostThis } from '../../../helpers.js'
   import { page } from '@inertiajs/inertia-svelte'
   let DATA = decodeProps($page.props.data)
 </script>
@@ -31,7 +31,7 @@
             <tr>
               <td><a href="/admin/roles/{role.id}">{role.name}</a></td>
               <td><a href="/admin/roles/{role.id}">{parseDbDate(role.updatedAt)}</a></td>
-              <td>{role.User?.length}</td>
+              <td>{role.user?.length}</td>
               <td>
                 <a href="/admin/roles/edit/{role.id}" class="btn btn-square btn-outline btn-sm">
                   <span class="material-icons">edit</span>
@@ -39,7 +39,7 @@
                 <button
                   on:click={() => {
                     confirmModal(
-                      `${txt('Deleting')} ${txt('Role')} ${role.id}`,
+                      `${txt('Deleting')} ${txt('Role')} ${role.name}`,
                       'Are you sure?',
                       'Delete',
                       () => {

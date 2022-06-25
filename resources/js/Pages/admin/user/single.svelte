@@ -46,7 +46,7 @@
       <!-- role -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
         <h4>{txt('role')}</h4>
-        <p><a href="/roles/{user.role.id}">{user.role.name}</a></p>
+        <p><a href="/roles/{user.role?.id}">{user.role?.name}</a></p>
       </div>
       <!-- validated -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">

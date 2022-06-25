@@ -4,7 +4,6 @@
   import MainLayout from './../../../layouts/main.svelte'
   import { decodeProps, parseDbDate } from '../../../helpers.js'
   import { page } from '@inertiajs/inertia-svelte'
-  import User from '../../admin/user.svelte'
   let DATA = decodeProps($page.props.data)
   const user = $page.props.user
   const relations = $page.props.relations

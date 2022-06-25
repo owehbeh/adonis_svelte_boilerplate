@@ -57,11 +57,19 @@ Route.group(() => {
   }).prefix('users')
   /* ---------------------------------- ROLES --------------------------------- */
   Route.group(() => {
-    Route.get('/edit/:id?', 'RolesController.roleEditAddView')
-    Route.post('/edit/:id?', 'RolesController.roleEditAdd')
-    Route.post('/delete/:id?', 'RolesController.roleDelete')
-    Route.get('/', 'RolesController.roleListView')
-    Route.get('/:id', 'RolesController.roleSingleView')
+    Route.get('/edit/:id?', 'RolesController.roleEditAddView').middleware([
+      `canDo:${permissions.EDIT_ROLES}`,
+    ])
+    Route.post('/edit/:id?', 'RolesController.roleEditAdd').middleware([
+      `canDo:${permissions.EDIT_USER}`,
+    ])
+    Route.post('/delete/:id?', 'RolesController.roleDelete').middleware([
+      `canDo:${permissions.DELETE_ROLES}`,
+    ])
+    Route.get('/', 'RolesController.roleListView').middleware([`canDo:${permissions.VIEW_ROLES}`])
+    Route.get('/:id', 'RolesController.roleSingleView').middleware([
+      `canDo:${permissions.VIEW_ROLES}`,
+    ])
   }).prefix('roles/')
 })
   .prefix('admin/')

@@ -189,9 +189,6 @@
           "type": "string",
           "format": "date-time"
         },
-        "organization": {
-          "$ref": "#/definitions/Organization"
-        },
         "createdBy": {
           "$ref": "#/definitions/User"
         },
@@ -206,6 +203,9 @@
           "items": {
             "$ref": "#/definitions/Request"
           }
+        },
+        "organization": {
+          "$ref": "#/definitions/Organization"
         }
       }
     },
@@ -226,9 +226,6 @@
           "type": "string",
           "format": "date-time"
         },
-        "organization": {
-          "$ref": "#/definitions/Organization"
-        },
         "createdBy": {
           "$ref": "#/definitions/User"
         },
@@ -237,6 +234,9 @@
           "items": {
             "$ref": "#/definitions/Warehouse"
           }
+        },
+        "organization": {
+          "$ref": "#/definitions/Organization"
         },
         "taxId": {
           "type": [
@@ -415,7 +415,7 @@
         "organization": {
           "$ref": "#/definitions/Organization"
         },
-        "User": {
+        "user": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/User"

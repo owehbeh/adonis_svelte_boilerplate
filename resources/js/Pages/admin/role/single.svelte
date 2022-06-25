@@ -1,8 +1,8 @@
 <script>
-  import { confirmModal, PostThis } from './../../helpers.js'
-  import { txt } from '../../language'
-  import MainLayout from './../../layouts/main.svelte'
-  import { decodeProps, parseDbDate } from '../../helpers.js'
+  import { confirmModal, PostThis } from '../../../helpers.js'
+  import { txt } from '../../../language'
+  import MainLayout from '../../../layouts/main.svelte'
+  import { decodeProps, parseDbDate } from '../../../helpers.js'
   import { page } from '@inertiajs/inertia-svelte'
   let DATA = decodeProps($page.props.data)
   const role = $page.props.role
@@ -43,11 +43,11 @@
         <h4>{txt('updatedAt')}</h4>
         <p>{role.updatedAt}</p>
       </div>
-      <!-- User -->
+      <!-- user -->
       <div class="my-2 px-2 w-1/4 overflow-hidden">
-        <h4>{txt('User')}</h4>
+        <h4>{txt('user')}</h4>
         <p>
-          <a href="#role-User-modal" class="cursor-pointer">{txt('View')} ({role.User?.length})</a>
+          <a href="#role-user-modal" class="cursor-pointer">{txt('View')} ({role.user?.length})</a>
         </p>
       </div>
       <!-- permissions -->
@@ -58,12 +58,12 @@
         {/each}
       </div>
     </div>
-    <!-- User modal -->
-    <div class="modal modal-bottom sm:modal-middle" id="role-User-modal">
+    <!-- user modal -->
+    <div class="modal modal-bottom sm:modal-middle" id="role-user-modal">
       <div class="modal-box">
-        <h3 class="font-bold text-lg">{txt('User')}</h3>
+        <h3 class="font-bold text-lg">{txt('user')}</h3>
         <ul class="menu p-2">
-          {#each role.User as UserItem}
+          {#each role.user as UserItem}
             <li class="m-0"><a href="/Users/{UserItem.id}" class="m-0">{UserItem.name}</a></li>
           {/each}
         </ul>
