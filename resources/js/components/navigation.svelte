@@ -1,9 +1,11 @@
 <script>
+  import { acronym, textToHex } from './../helpers.js'
   import { selectedLanguage, switchLanguage, txt } from '../language.js'
   import Drawer, { AppContent, Content, Header, Subtitle } from '@smui/drawer'
   import Button, { Label } from '@smui/button'
   import List, { Item, Text } from '@smui/list'
   import { Graphic, Subheader } from '@smui/list'
+  import User from '../Pages/admin/user.svelte'
 
   // Side menu and dark/light mode
   let menuOpen = localStorage.getItem('mySideMenuOpen') == 'true'
@@ -37,19 +39,7 @@
     <div class="navbar bg-base-100">
       <div class="flex-none">
         <label class="btn btn-square btn-ghost" for="my-drawer">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            class="inline-block w-5 h-5 stroke-current"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
+          <span class="material-icons"> menu </span>
         </label>
       </div>
       <div class="flex-1">
@@ -96,14 +86,12 @@
         <div class="form-control">
           <input type="text" placeholder="Search" class="input input-bordered" />
         </div>
-        <div class="dropdown dropdown-end">
-          <!-- svelte-ignore a11y-label-has-associated-control -->
-          <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-            <div class="w-10 rounded-full">
-              <!-- svelte-ignore a11y-missing-attribute -->
-              <img src="https://api.lorem.space/image/face?hash=33791" />
+        <div class="dropdown dropdown-end cursor-pointer">
+          <a href="/users/me" class="avatar placeholder">
+            <div class="bg-neutral-focus text-neutral-content rounded-full w-8">
+              <span class="text-xs"> {acronym(myData.user.name)} </span>
             </div>
-          </label>
+          </a>
         </div>
       </div>
     </div>

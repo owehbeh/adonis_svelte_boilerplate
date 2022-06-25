@@ -60,6 +60,9 @@ Route.group(() => {
 /* ---------------------------------- USER ---------------------------------- */
 
 Route.group(() => {
+  Route.get('/me', 'RenameMeUsersController.currentUserView')
+  Route.get('/edit/me', 'RenameMeUsersController.currentUserEditView')
+  Route.post('/edit/me', 'RenameMeUsersController.currentUserEdit')
   Route.get('/edit/:id?', 'RenameMeUsersController.userEditAddView')
   Route.post('/edit/:id?', 'RenameMeUsersController.userEditAdd')
   Route.post('/delete/:id?', 'RenameMeUsersController.userDelete')

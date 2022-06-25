@@ -66,3 +66,44 @@ export const PostThis = (url, params, csrf) => {
   document.body.appendChild(myForm)
   myForm.submit()
 }
+
+/**
+ * Convert full name to acronym
+ * @param {String} s full name of user
+ * @returns Acronym of user's name Omar Wehbeh = OW
+ */
+export const acronym = function (s) {
+  var words
+  var acronym
+  var nextWord
+
+  words = s.split(' ')
+  acronym = ''
+  let index = 0
+  while (index < words.length) {
+    nextWord = words[index]
+    acronym = acronym + nextWord.charAt(0)
+    index = index + 1
+  }
+  return acronym
+}
+
+/**
+ * Get the same random hex code for the same text
+ * @param {String} text Any text
+ * @returns hex string
+ */
+export const textToHex = (text) => {
+  var hash = 0
+  if (text.length === 0) return hash
+  for (var i = 0; i < text.length; i++) {
+    hash = text.charCodeAt(i) + ((hash << 5) - hash)
+    hash = hash & hash
+  }
+  var color = '#'
+  for (var i = 0; i < 3; i++) {
+    var value = (hash >> (i * 8)) & 255
+    color += ('00' + value.toString(16)).substr(-2)
+  }
+  return color
+}

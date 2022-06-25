@@ -23,7 +23,8 @@
       <div class="flex flex-wrap -mx-2">
         {{page_form_content}}
       </div>
-      <button type="submit" class="btn btn-outline mt-8">Save</button>
+      <a href="/{{model_name}}s/{ {{model_name}}.id}" class="btn btn-ghost mt-8"> {txt('Back')} </a>
+      <button type="submit" class="btn btn-outline mt-8">{txt('Save')}</button>
     </form>
   </div>
 

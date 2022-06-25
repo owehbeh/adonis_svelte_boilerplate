@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { prisma } from '@ioc:Adonis/Addons/Prisma'
+import Hash from '@ioc:Adonis/Core/Hash'
 
 export default class RenameMeUsersController {
   public async userListView(ctx: HttpContextContract) {
@@ -141,5 +142,26 @@ export default class RenameMeUsersController {
       where: { id: ctx.request.params().id },
     })
     return ctx.response.redirect('/users')
+  }
+
+  public async currentUserView(ctx: HttpContextContract) {
+    return ctx.inertia.render('user/me')
+  }
+
+  public async currentUserEditView(ctx: HttpContextContract) {
+    return ctx.inertia.render('user/meEdit')
+  }
+
+  public async currentUserEdit(ctx: HttpContextContract) {
+    let { name, password } = ctx.request.body()
+    let data = {
+      name,
+    }
+    if (password) data['password'] = await Hash.make(password)
+    await prisma.user.update({
+      where: { id: ctx.auth.user!.id },
+      data,
+    })
+    return ctx.response.redirect(`/users/me`)
   }
 }
