@@ -1,5 +1,13 @@
 import { Role } from '@prisma/client'
-import * as permissions from '../Permission/permissions.json'
+const fs = require('fs')
+const util = require('util')
+const readFileAsync = util.promisify(fs.readFile)
+// eslint-disable-next-line @typescript-eslint/naming-convention
+let _permissions = null
+export const getPermissions = async () => {
+  if (_permissions) return _permissions
+  return JSON.parse(await readFileAsync(`app/Helpers/Permission/permissions.json`, 'utf8'))
+}
 
 export const hasPermission = (user: any, permissions: string[]) => {
   let canDo = false
@@ -16,8 +24,9 @@ export const hasPermission = (user: any, permissions: string[]) => {
 }
 // ["VIEW_CUSTOMERS", "VIEW_SUPPLIERS", "VIEW_USERS", "VIEW_SETTINGS", "VIEW_DASHBOARD", "VIEW_REQUESTS", "VIEW_ORDERS", "VIEW_DELIVERIES", "VIEW_TRACKING", "CREATE_REQUEST", "CREATE_ORDER", "CREATE_DELIVERY", "CREATE_CUSTOMER", "CREATE_SUPPLIER", "CREATE_USER", "EDIT_REQUEST", "EDIT_ORDER", "EDIT_DELIVERY", "EDIT_CUSTOMER", "EDIT_SUPPLIER", "EDIT_USER", "EDIT_SETTINGS", "DELETE_REQUEST", "DELETE_ORDER", "DELETE_DELIVERY", "DELETE_CUSTOMER", "DELETE_SUPPLIER", "DELETE_USER"]
 // ["VIEW_CUSTOMERS", "VIEW_SUPPLIERS", "VIEW_USERS", "VIEW_SETTINGS", "VIEW_REQUESTS", "VIEW_ORDERS", "VIEW_DELIVERIES", "VIEW_TRACKING", "CREATE_REQUEST", "CREATE_ORDER", "CREATE_DELIVERY", "CREATE_CUSTOMER", "CREATE_SUPPLIER", "CREATE_USER", "EDIT_REQUEST", "EDIT_ORDER", "EDIT_DELIVERY", "EDIT_CUSTOMER", "EDIT_SUPPLIER", "EDIT_USER", "EDIT_SETTINGS", "DELETE_REQUEST", "DELETE_ORDER", "DELETE_DELIVERY", "DELETE_CUSTOMER", "DELETE_SUPPLIER", "DELETE_USER"]
-export const AppRoles = (organizationId: string): Role[] => {
+export const AppRoles = async (organizationId: string): Promise<Role[]> => {
   // Define Permissions
+  const permissions = await getPermissions()
   const allPermissions = Object.keys(permissions).map((key) => permissions[key])
   const employeePermission = [
     permissions.VIEW_DASHBOARD,

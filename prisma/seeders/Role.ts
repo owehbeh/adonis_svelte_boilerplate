@@ -1,30 +1,12 @@
 import { prisma, PrismaSeederBase } from '@ioc:Adonis/Addons/Prisma'
-import Hash from '@ioc:Adonis/Core/Hash'
 import { Role } from '@prisma/client'
 import { AppRoles } from 'App/Helpers/Permission/PermissionHelper'
 
-export default class UserSeeder extends PrismaSeederBase {
+export default class RoleSeeder extends PrismaSeederBase {
   public static developmentOnly = false
 
   public async run() {
-    const email = 'owehbeh@gmail.com'
-    const hashedPassword = await Hash.make('bbs@QnVvJT32pMz')
-
-    const org = await prisma.organization.upsert({
-      where: {
-        slug: 'ats',
-      },
-      update: {
-        name: 'ATS',
-        slug: 'ats',
-      },
-      create: {
-        name: 'ATS',
-        slug: 'ats',
-      },
-    })
-
-    let appRoles = await AppRoles(org.id)
+    let appRoles = await AppRoles('cl1xpaww8000000w97mzhx5fi')
     for (let i = 0; i < appRoles.length; i++) {
       const role: Role = appRoles[i]
       await prisma.role.upsert({
@@ -50,25 +32,6 @@ export default class UserSeeder extends PrismaSeederBase {
       })
     }
 
-    await prisma.user.upsert({
-      where: {
-        email: email,
-      },
-      update: {
-        email,
-        password: hashedPassword,
-        organizationId: org.id,
-        name: 'Omar',
-        roleId: '1',
-      },
-      create: {
-        email,
-        password: hashedPassword,
-        organizationId: org.id,
-        name: 'Omar',
-      },
-    })
-
-    console.log(`Database has been seeded. 🌱`)
+    console.log(`Roles database has been seeded. 🌱`)
   }
 }

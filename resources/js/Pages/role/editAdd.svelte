@@ -6,14 +6,20 @@
   import { page } from '@inertiajs/inertia-svelte'
   import User from '../admin/user.svelte'
   let DATA = decodeProps($page.props.data)
-  const supplier = $page.props.supplier
+  const role = $page.props.role
   const relations = $page.props.relations
 </script>
 
 <MainLayout myData={DATA}>
   <div style="margin:20px">
-    <h2>{txt('Supplier')}</h2>
-    <form action="/users/edit/{supplier.id}" method="POST">
+    <h2>
+      <a href="/admin/roles">{txt('Roles')}</a>
+      {#if role}
+        <span>/</span>
+        <a href="/admin/roles/{role.id}">{role.id}</a>
+      {/if}
+    </h2>
+    <form action="/admin/roles/edit/{role?.id || ''}" method="POST">
       <div class="flex flex-wrap -mx-2">
         <!--  STRING/NUMBER | id -->
         <div class="my-2 px-2 w-1/3 overflow-hidden">
@@ -26,7 +32,8 @@
               name="id"
               placeholder="{txt('Insert')} {txt('id')}"
               class="input input-bordered w-full max-w-xs"
-              value={supplier.id}
+              value={role?.id || ''}
+              required
             />
             <label class="label">
               <span class="label-text-alt">{$page.props.errors?.id || ''}</span>
@@ -44,7 +51,8 @@
               name="name"
               placeholder="{txt('Insert')} {txt('name')}"
               class="input input-bordered w-full max-w-xs"
-              value={supplier.name}
+              value={role?.name || ''}
+              required
             />
             <label class="label">
               <span class="label-text-alt">{$page.props.errors?.name || ''}</span>
@@ -62,7 +70,8 @@
               name="createdAt"
               placeholder="{txt('Insert')} {txt('createdAt')}"
               class="input input-bordered w-full max-w-xs"
-              value={supplier.createdAt}
+              value={role?.createdAt || ''}
+              required
             />
             <label class="label">
               <span class="label-text-alt">{$page.props.errors?.createdAt || ''}</span>
@@ -80,86 +89,66 @@
               name="updatedAt"
               placeholder="{txt('Insert')} {txt('updatedAt')}"
               class="input input-bordered w-full max-w-xs"
-              value={supplier.updatedAt}
+              value={role?.updatedAt || ''}
+              required
             />
             <label class="label">
               <span class="label-text-alt">{$page.props.errors?.updatedAt || ''}</span>
             </label>
           </div>
         </div>
-        <!--  STRING/NUMBER | organization -->
+        <!--  STRING/NUMBER | permissions -->
+        <div class="my-2 px-2 w-1/3 overflow-hidden">
+          <div class="form-control w-full max-w-xs">
+            <label class="label">
+              <span class="label-text">{txt('permissions')}</span>
+            </label>
+            <input
+              type="text"
+              name="permissions"
+              placeholder="{txt('Insert')} {txt('permissions')}"
+              class="input input-bordered w-full max-w-xs"
+              value={role?.permissions || ''}
+              required
+            />
+            <label class="label">
+              <span class="label-text-alt">{$page.props.errors?.permissions || ''}</span>
+            </label>
+          </div>
+        </div>
+        <!--  SELECT | organization -->
         <div class="my-2 px-2 w-1/3 overflow-hidden">
           <div class="form-control w-full max-w-xs">
             <label class="label">
               <span class="label-text">{txt('organization')}</span>
             </label>
-            <input
-              type="text"
-              name="organization"
-              placeholder="{txt('Insert')} {txt('organization')}"
-              class="input input-bordered w-full max-w-xs"
-              value={supplier.organization}
-            />
-            <label class="label">
-              <span class="label-text-alt">{$page.props.errors?.organization || ''}</span>
-            </label>
-          </div>
-        </div>
-        <!--  STRING/NUMBER | createdBy -->
-        <div class="my-2 px-2 w-1/3 overflow-hidden">
-          <div class="form-control w-full max-w-xs">
-            <label class="label">
-              <span class="label-text">{txt('createdBy')}</span>
-            </label>
-            <input
-              type="text"
-              name="createdBy"
-              placeholder="{txt('Insert')} {txt('createdBy')}"
-              class="input input-bordered w-full max-w-xs"
-              value={supplier.createdBy}
-            />
-            <label class="label">
-              <span class="label-text-alt">{$page.props.errors?.createdBy || ''}</span>
-            </label>
-          </div>
-        </div>
-        <!--  MULTI SELECT | warehouses -->
-        <div class="my-2 px-2 w-1/3">
-          <div class="form-control w-full max-w-xs">
-            <label class="label">
-              <span class="label-text">{txt('warehouses')}</span>
-            </label>
-            <select name="warehouses" class="multiple w-full max-w-xs" multiple>
-              {#each relations.warehousesList as warehouses}
-                <option
-                  value={warehouses.id}
-                  selected={supplier.warehouses.map((x) => x.id).indexOf(warehouses.id) != -1
-                    ? 'selected'
-                    : ''}>{warehouses.id}</option
-                >
+            <select name="organization" class="select select-bordered w-full max-w-xs">
+              {#each relations.organizationList as organization}
+                <option value={organization.id}>{organization.id}</option>
               {/each}
             </select>
           </div>
         </div>
-        <!--  MULTI SELECT | item -->
+        <!--  MULTI SELECT | User -->
         <div class="my-2 px-2 w-1/3">
           <div class="form-control w-full max-w-xs">
             <label class="label">
-              <span class="label-text">{txt('item')}</span>
+              <span class="label-text">{txt('User')}</span>
             </label>
-            <select name="item" class="multiple w-full max-w-xs" multiple>
-              {#each relations.itemList as item}
+            <select name="User" class="multiple w-full max-w-xs" multiple>
+              {#each relations.UserList as User}
                 <option
-                  value={item.id}
-                  selected={supplier.item.map((x) => x.id).indexOf(item.id) != -1 ? 'selected' : ''}
-                  >{item.id}</option
+                  value={User.id}
+                  selected={role?.User.map((x) => x.id).indexOf(User.id) != -1 ? 'selected' : ''}
+                  >{User.id}</option
                 >
               {/each}
             </select>
           </div>
         </div>
       </div>
-      <button type="submit" class="btn btn-outline mt-8">Save</button>
+      <a href="/admin/roles/{role ? role.id : ''}" class="btn btn-ghost mt-8"> {txt('Back')} </a>
+      <button type="submit" class="btn btn-outline mt-8">{txt('Save')}</button>
     </form>
   </div>
 

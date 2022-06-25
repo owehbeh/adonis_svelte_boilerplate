@@ -5,7 +5,7 @@ import { prisma } from '@ioc:Adonis/Addons/Prisma'
 import { NotificationTypeEnum } from 'Contracts/enums'
 import FeedbackHelper from 'App/Helpers/FeedbackHelper'
 
-export default class UsersController {
+export default class AuthController {
   /* ------------------------------ REGISTER VIEW ----------------------------- */
   // async registerView(ctx: HttpContextContract) {
   //   try {

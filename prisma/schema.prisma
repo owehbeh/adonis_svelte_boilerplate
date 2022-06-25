@@ -134,7 +134,7 @@ model Role {
   permissions    Json         @default("[]")
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
-  User           User[]
+  user           User[]
 }
 
 model Address {

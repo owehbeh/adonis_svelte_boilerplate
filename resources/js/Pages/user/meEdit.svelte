@@ -73,11 +73,11 @@
         </div>
         <!--  STRING/NUMBER | role -->
         <div class="my-2 px-2 w-1/2 overflow-hidden">
-          <div class="form-control w-full max-w-xs">
+          <div class="form-control w-full max-w-xs cursor-not-allowed">
             <label class="label">
-              <span class="label-text">{txt('role')}</span>
+              <span class="label-text">{txt('Role')}</span>
             </label>
-            <select name="role" class="select select-bordered w-full max-w-xs" disabled>
+            <select name="role" class="select select-bordered w-full max-w-xs " disabled>
               <option value={user.role.id}>{user.role.name}</option>
             </select>
           </div>

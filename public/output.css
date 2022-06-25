@@ -3095,6 +3095,12 @@ body[dir="rtl"] .checkbox:checked,
   border-bottom-right-radius: var(--rounded-box, 1rem);
 }
 
+.table-compact :where(th, td) {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
 .invisible {
   visibility: hidden;
 }
@@ -3256,6 +3262,14 @@ body[dir="rtl"] .checkbox:checked,
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.cursor-no-drop {
+  cursor: no-drop;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed;
 }
 
 .flex-col {

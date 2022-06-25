@@ -31,23 +31,41 @@ Route.get('/', async ({ inertia }) => {
 
 /* ---------------------------------- AUTH ---------------------------------- */
 Route.group(() => {
-  Route.post('/login', 'UsersController.login')
-  Route.get('/login', 'UsersController.loginView')
-  Route.post('/logout', 'UsersController.logout')
+  Route.post('/login', 'AuthController.login')
+  Route.get('/login', 'AuthController.loginView')
+  Route.post('/logout', 'AuthController.logout')
 })
 
 /* --------------------------- ORGANIZATION ADMIN --------------------------- */
 Route.group(() => {
-  Route.get('/organizations', 'AdminController.organizationView')
+  Route.get('/settings', 'AdminController.organizationView')
+  /* ---------------------------------- USERS --------------------------------- */
+  Route.group(() => {
+    Route.get('/edit/:id?', 'AdminController.userEditAddView').middleware([
+      `canDo:${permissions.EDIT_USER}`,
+    ])
+    Route.post('/edit/:id?', 'AdminController.userEditAdd').middleware([
+      `canDo:${permissions.EDIT_USER}`,
+    ])
+    Route.post('/delete/:id?', 'AdminController.userDelete').middleware([
+      `canDo:${permissions.DELETE_USER}`,
+    ])
+    Route.get('/', 'AdminController.userListView').middleware([`canDo:${permissions.VIEW_USERS}`])
+    Route.get('/:id', 'AdminController.userSingleView').middleware([
+      `canDo:${permissions.VIEW_USERS}`,
+    ])
+  }).prefix('users')
+  /* ---------------------------------- ROLES --------------------------------- */
+  Route.group(() => {
+    Route.get('/edit/:id?', 'RolesController.roleEditAddView')
+    Route.post('/edit/:id?', 'RolesController.roleEditAdd')
+    Route.post('/delete/:id?', 'RolesController.roleDelete')
+    Route.get('/', 'RolesController.roleListView')
+    Route.get('/:id', 'RolesController.roleSingleView')
+  }).prefix('roles/')
 })
   .prefix('admin/')
   .middleware(['auth'])
-
-Route.group(() => {
-  Route.get('/', 'RequestsController.indexView')
-})
-  .prefix('requests/')
-  .middleware('auth')
 
 /* ------------------------------- SUPER ADMIN ------------------------------ */
 Route.group(() => {
@@ -58,7 +76,6 @@ Route.group(() => {
   .middleware(['auth', 'superAdmin'])
 
 /* ---------------------------------- USER ---------------------------------- */
-
 Route.group(() => {
   Route.get('/me', 'RenameMeUsersController.currentUserView')
   Route.get('/edit/me', 'RenameMeUsersController.currentUserEditView')
@@ -73,47 +90,6 @@ Route.group(() => {
   .middleware(['auth'])
 
 /* ---------------------------------- ROLE ---------------------------------- */
-Route.group(() => {
-  Route.get('/', 'RolesController.roleListView')
-  Route.get('/:id', 'RolesController.roleSingleView')
-  Route.get('/:id?', 'RolesController.roleEditAddView')
-  Route.post('/:id?', 'RolesController.roleEditAdd')
-  Route.delete('/:id?', 'RolesController.roleDelete')
-})
-  .prefix('roles/')
-  .middleware(['auth'])
-
-/* ---------------------------------- _NOTE ---------------------------------- */
-Route.group(() => {
-  Route.get('/edit/:id?', 'RenameMeNotesController.noteEditAddView')
-  Route.post('/edit/:id?', 'RenameMeNotesController.noteEditAdd')
-  Route.post('/delete/:id?', 'RenameMeNotesController.noteDelete')
-  Route.get('/', 'RenameMeNotesController.noteListView')
-  Route.get('/:id', 'RenameMeNotesController.noteSingleView')
-})
-  .prefix('notes/')
-  .middleware(['auth'])
-
-/* -------------------------------- SUPPLIER -------------------------------- */
-Route.group(() => {
-  Route.get('/', 'SuppliersController.supplierListView')
-  Route.get('/:id', 'SuppliersController.supplierSingleView')
-  Route.get('/edit/:id?', 'SuppliersController.supplierEditAddView')
-  Route.post('/:id?', 'SuppliersController.supplierEditAdd')
-  Route.delete('/:id?', 'SuppliersController.supplierDelete')
-})
-  .prefix('suppliers/')
-  .middleware(['auth'])
-/* -------------------------------- CUSTOMER -------------------------------- */
-Route.group(() => {
-  Route.get('/', 'CustomersController.customerListView')
-  Route.get('/:id', 'CustomersController.customerSingleView')
-  Route.get('/edit/:id?', 'CustomersController.customerEditAddView')
-  Route.post('/:id?', 'CustomersController.customerEditAdd')
-  Route.delete('/:id?', 'CustomersController.customerDelete')
-})
-  .prefix('customers/')
-  .middleware(['auth'])
 
 /* --------------------------------- TESTING -------------------------------- */
 Route.get('/pizza', async ({ inertia }) => {

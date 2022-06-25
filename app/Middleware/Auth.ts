@@ -2,6 +2,7 @@ import { GuardsList } from '@ioc:Adonis/Addons/Auth'
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { AuthenticationException } from '@adonisjs/auth/build/standalone'
 import { prisma } from '@ioc:Adonis/Addons/Prisma'
+import { Exception } from '@adonisjs/core/build/standalone'
 
 /**
  * Auth middleware is meant to restrict un-authenticated access to a given route
@@ -72,6 +73,13 @@ export default class AuthMiddleware {
      */
     const guards = customGuards.length ? customGuards : [auth.name]
     await this.authenticate(auth, guards)
+    if (!auth.user!.validated)
+      throw new AuthenticationException(
+        'Unauthorized access',
+        'E_UNAUTHORIZED_ACCESS',
+        undefined,
+        this.redirectTo
+      )
     // INCLUDE RELATIONS START
     if (auth.user && auth.user.organizationId) {
       const userOrg = await prisma.organization.findFirst({

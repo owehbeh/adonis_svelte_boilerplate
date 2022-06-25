@@ -40,10 +40,15 @@ export const getUserMenu = (user?: any): SideMenu[] => {
     icon: 'store',
     url: '/suppliers',
   }
+  const rolesItem = {
+    name: 'Roles',
+    icon: 'verified_user',
+    url: '/admin/roles',
+  }
   const usersItem = {
     name: 'Users',
     icon: 'people',
-    url: '/users',
+    url: '/admin/users',
   }
   const settingsItem = {
     name: 'Settings',
@@ -109,6 +114,11 @@ export const getUserMenu = (user?: any): SideMenu[] => {
     if (!topMenuSeparatorExist) sideMenuList.push({ name: 'separator' })
     topMenuSeparatorExist = true
     sideMenuList.push(usersItem)
+  }
+  if (hasPermission(user, [permissions.VIEW_ROLES])) {
+    if (!topMenuSeparatorExist) sideMenuList.push({ name: 'separator' })
+    topMenuSeparatorExist = true
+    sideMenuList.push(rolesItem)
   }
   if (hasPermission(user, [permissions.VIEW_SETTINGS])) {
     if (!topMenuSeparatorExist) sideMenuList.push({ name: 'separator' })
