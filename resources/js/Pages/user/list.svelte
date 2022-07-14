@@ -3,7 +3,81 @@
   import MainLayout from './../../layouts/main.svelte'
   import { confirmModal, decodeProps, parseDbDate, PostThis } from '../../helpers.js'
   import { page } from '@inertiajs/inertia-svelte'
+
   let DATA = decodeProps($page.props.data)
+
+  import { w2grid, w2ui, w2alert } from '../../libs/w2ui.es6.js'
+  import jQuery from 'jquery'
+  import { onMount } from 'svelte'
+  let userList = $page.props.userList
+  console.log($page)
+  onMount(() => {
+    let grid = new w2grid({
+      name: 'grid',
+      recid: 'id',
+      show: {
+        toolbar: true,
+        footer: true,
+        liveSearch: true,
+        toolbarColumns: true,
+        toolbarDelete: true,
+        toolbarEdit: true,
+        toolbarReload: false,
+      },
+      reorderColumns: true,
+      multiSelect: false,
+      editable: true,
+      searches: [
+        { field: 'id', label: 'ID ', type: 'text' },
+        { field: 'name', label: 'Name', type: 'text' },
+        { field: 'email', label: 'Email', type: 'text' },
+        {
+          field: 'status',
+          label: 'Status',
+          type: 'enum',
+          style: 'width1: 350px',
+          options: { items: ['active', 'selected', 'submitted'] },
+        },
+        { field: 'createdAt', label: 'Created', type: 'date' },
+        { field: 'sdate', label: 'Start Date', type: 'date' },
+      ],
+      columns: [
+        { field: 'id', text: 'ID', size: '50px', sortable: true, attr: 'align=center' },
+        { field: 'name', text: 'Name', size: '30%', sortable: true },
+        {
+          field: 'email',
+          text: 'Email',
+          clipboardCopy: true,
+          render: (ci) => `<a href='mailto:${ci.email}'>${ci.email}</a>`,
+        },
+        {
+          field: 'createdAt',
+          text: 'Created',
+          render: 'datetime:mm/dd/yyyy',
+          size: '120px',
+        },
+        { field: 'role.name', text: 'Role', size: '120px' },
+      ],
+      records: userList,
+      onDelete: function (e) {
+        e.force = true
+        e.preventDefault()
+        var user = userList.find((x) => x.id == this.getSelection()[0])
+        console.log(user)
+        confirmModal(
+          `${txt('Deleting')} ${txt('User')} ${user.name}`,
+          'Are you sure?',
+          'Delete',
+          () => {
+            PostThis(`/users/delete/${user.id}`, null)
+          }
+        )
+      },
+      onEdit: (e) => (window.location.href = `/users/edit/${e.recid}`),
+    })
+    w2ui['grid'].render(jQuery('#gridz'))
+    // userList = userList.splice(0, 1)
+  })
 </script>
 
 <MainLayout myData={DATA}>
@@ -84,5 +158,6 @@
         </tbody>
       </table>
     </div>
+    <div style="height: 64vh" id="gridz">GRID</div>
   </div>
 </MainLayout>

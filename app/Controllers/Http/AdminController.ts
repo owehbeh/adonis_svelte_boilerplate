@@ -62,7 +62,7 @@ export default class AdminController {
         name,
         email,
         validated: validated ? true : false,
-        password,
+        password: password || (await Hash.make('123456')),
         superAdmin: false,
         organizationId: ctx.auth.user!.organizationId,
         roleId: role,

@@ -38,6 +38,7 @@ export let lan = {
     'Usage': 'Usage',
     'View': 'View',
     'notes': 'notes',
+    'Roles': 'Roles ',
   },
   ar: {
     'Hello,': 'مرحبا،',
@@ -61,5 +62,6 @@ export let lan = {
     'Usage': 'إستعمال',
     'View': 'شاهد',
     'notes': 'ملاحظات',
+    'Roles': 'الأدوار',
   },
 }

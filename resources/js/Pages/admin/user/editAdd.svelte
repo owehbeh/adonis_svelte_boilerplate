@@ -69,7 +69,6 @@
               name="password"
               placeholder="{txt('Change')} {txt('password')}?"
               class="input input-bordered w-full max-w-xs"
-              required
             />
             <label class="label">
               <span class="label-text-alt">{$page.props.errors?.password || ''}</span>
