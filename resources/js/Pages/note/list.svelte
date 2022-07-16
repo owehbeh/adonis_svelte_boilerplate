@@ -28,38 +28,46 @@
       searches: [
         // For more information visit http://w.w2ui.com/web/demos/#/grid/16
         { field: 'id', label: txt('Id'), type: 'text' },
-{ field: 'title', label: txt('Title'), type: 'text' },
-{ field: 'body', label: txt('Body'), type: 'text' },
-{ field: 'createdAt', label: txt('CreatedAt'), type: 'text' },
-{ field: 'updatedAt', label: txt('UpdatedAt'), type: 'text' },
-{ field: 'user', label: txt('User'), type: 'text' },
-{ field: 'request', label: txt('Request'), type: 'text' },
-{ field: 'item', label: txt('Item'), type: 'text' },
-{ field: 'organization', label: txt('Organization'), type: 'text' },
-
+        { field: 'title', label: txt('Title'), type: 'text' },
+        { field: 'body', label: txt('Body'), type: 'text' },
+        { field: 'createdAt', label: txt('CreatedAt'), type: 'text' },
+        { field: 'updatedAt', label: txt('UpdatedAt'), type: 'text' },
+        { field: 'user', label: txt('User'), type: 'text' },
+        { field: 'request', label: txt('Request'), type: 'text' },
+        { field: 'item', label: txt('Item'), type: 'text' },
+        { field: 'organization', label: txt('Organization'), type: 'text' },
       ],
       columns: [
-        // For datetime add => render: 'datetime:mm/dd/yyyy'
         { field: 'id', text: txt('Id'), sortable: true },
-{ field: 'title', text: txt('Title'), sortable: true },
-{ field: 'body', text: txt('Body'), sortable: true },
-{ field: 'createdAt', text: txt('CreatedAt'), render: 'datetime:mm/dd/yyyy', sortable: true },
-{ field: 'updatedAt', text: txt('UpdatedAt'), render: 'datetime:mm/dd/yyyy', sortable: true },
+        { field: 'title', text: txt('Title'), sortable: true },
+        { field: 'body', text: txt('Body'), sortable: true },
+        {
+          field: 'createdAt',
+          text: txt('CreatedAt'),
+          render: 'datetime:mm/dd/yyyy',
+          sortable: true,
+        },
+        {
+          field: 'updatedAt',
+          text: txt('UpdatedAt'),
+          render: 'datetime:mm/dd/yyyy',
+          sortable: true,
+        },
 
         {
           field: 'user.id',
           text: txt('User'),
-          render: (ci) => `<a href='/users/${ci.user.id}'>${ci.user.id}</a>`,
+          render: (ci) => `<a href='/users/${ci.user.id}'>${ci.user.name}</a>`,
         },
-{ field: 'request.length', text: txt('Request'), sortable: true },
-{ field: 'item.length', text: txt('Item'), sortable: true },
+        { field: 'request.length', text: txt('Request'), sortable: true },
+        { field: 'item.length', text: txt('Item'), sortable: true },
 
         {
           field: 'organization.id',
           text: txt('Organization'),
-          render: (ci) => `<a href='/organizations/${ci.organization.id}'>${ci.organization.id}</a>`,
+          render: (ci) =>
+            `<a href='/organizations/${ci.organization.id}'>${ci.organization.name}</a>`,
         },
-
       ],
       records: noteList,
       onDelete: function (e) {
@@ -67,11 +75,11 @@
         e.preventDefault()
         var note = noteList.find((x) => x.id == this.getSelection()[0])
         confirmModal(
-          `${txt('Deleting')} ${txt('Note')} ${ note.id }`,
+          `${txt('Deleting')} ${txt('Note')} ${note.id}`,
           'Are you sure?',
           'Delete',
           () => {
-            PostThis(`/notes/delete/${ note.id }`, null)
+            PostThis(`/notes/delete/${note.id}`, null)
           }
         )
       },

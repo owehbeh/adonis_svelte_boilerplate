@@ -30,7 +30,6 @@
         {{ searches }}
       ],
       columns: [
-        // For datetime add => render: 'datetime:mm/dd/yyyy'
         {{ columns }}
       ],
       records: {{model_name}}List,
