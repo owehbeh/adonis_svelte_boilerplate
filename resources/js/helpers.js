@@ -2,6 +2,7 @@
 import { writable } from 'svelte/store'
 import Base64 from 'crypto-js/enc-base64'
 import Utf8 from 'crypto-js/enc-utf8'
+import dateFormat, { masks } from 'dateformat'
 export const modal = {
   show: writable(false),
   title: writable(),
@@ -26,6 +27,10 @@ export const parseDbDate = (dateString) => {
   const finalString =
     new Date(dateString).toLocaleDateString() + ' - ' + new Date(dateString).toLocaleTimeString()
   return finalString
+}
+
+export const parseDbDateToInput = (dateString) => {
+  return dateFormat(new Date(dateString), `yyyy-mm-dd'T'HH:MM:ss`)
 }
 
 export const confirmModal = (title, content, buttonText, fn) => {

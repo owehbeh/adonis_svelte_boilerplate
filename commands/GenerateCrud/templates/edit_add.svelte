@@ -2,7 +2,7 @@
 <script>
   import { txt } from '../../language'
   import MainLayout from './../../layouts/main.svelte'
-  import { decodeProps, parseDbDate } from '../../helpers.js'
+  import { decodeProps, parseDbDate, parseDbDateToInput } from '../../helpers.js'
   import { page } from '@inertiajs/inertia-svelte'
   import User from '../admin/user.svelte'
   let DATA = decodeProps($page.props.data)

@@ -39,6 +39,7 @@ export let lan = {
     'View': 'View',
     'notes': 'notes',
     'Roles': 'Roles ',
+    'Edit': 'Edit ',
   },
   ar: {
     'Hello,': 'مرحبا،',
@@ -63,5 +64,6 @@ export let lan = {
     'View': 'شاهد',
     'notes': 'ملاحظات',
     'Roles': 'الأدوار',
+    'Edit': 'تعديل ',
   },
 }

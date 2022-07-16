@@ -38,7 +38,12 @@ export default class {{controller_name}} {
     var {{ model_name }}
     const {{ model_name }}Id: string = ctx.request.params().id
     let { {{edit_relation_vars}} } = ctx.request.body()
+
+    // Multiselect fix
     {{edit_relation_vars_values}}
+
+    // Submitted datetime fix
+    {{datetime_fix}}
 
     {{ model_name }} = await prisma.{{ model_name }}.upsert({
       where: { id: {{ model_name }}Id || '' },

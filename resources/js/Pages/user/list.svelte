@@ -6,14 +6,13 @@
 
   let DATA = decodeProps($page.props.data)
 
-  import { w2grid, w2ui, w2alert } from '../../libs/w2ui.es6.js'
+  import { w2grid, w2ui } from '../../libs/w2ui.es6.js'
   import jQuery from 'jquery'
   import { onMount } from 'svelte'
   let userList = $page.props.userList
-  console.log($page)
   onMount(() => {
     let grid = new w2grid({
-      name: 'grid',
+      name: 'users_grid',
       recid: 'id',
       show: {
         toolbar: true,
@@ -26,7 +25,6 @@
       },
       reorderColumns: true,
       multiSelect: false,
-      editable: true,
       searches: [
         { field: 'id', label: 'ID ', type: 'text' },
         { field: 'name', label: 'Name', type: 'text' },
@@ -42,8 +40,8 @@
         { field: 'sdate', label: 'Start Date', type: 'date' },
       ],
       columns: [
-        { field: 'id', text: 'ID', size: '50px', sortable: true, attr: 'align=center' },
-        { field: 'name', text: 'Name', size: '30%', sortable: true },
+        { field: 'id', text: txt('id'), sortable: true },
+        { field: 'name', text: 'Name', sortable: true },
         {
           field: 'email',
           text: 'Email',
@@ -56,14 +54,19 @@
           render: 'datetime:mm/dd/yyyy',
           size: '120px',
         },
-        { field: 'role.name', text: 'Role', size: '120px' },
+        {
+          field: 'role.name',
+          text: 'Role',
+          render: (ci) => `<a href='/roles/${ci.role.id}'>${ci.role.name}</a>`,
+        },
+        { field: 'validated', text: txt('Validated'), sortable: true, render: 'toggle' },
+        { field: 'supplier.length', text: txt('Supplier'), sortable: true },
       ],
       records: userList,
       onDelete: function (e) {
         e.force = true
         e.preventDefault()
         var user = userList.find((x) => x.id == this.getSelection()[0])
-        console.log(user)
         confirmModal(
           `${txt('Deleting')} ${txt('User')} ${user.name}`,
           'Are you sure?',
@@ -74,9 +77,11 @@
         )
       },
       onEdit: (e) => (window.location.href = `/users/edit/${e.recid}`),
+      onDblClick: (e) => (window.location.href = `/users/${e.recid}`),
     })
-    w2ui['grid'].render(jQuery('#gridz'))
-    // userList = userList.splice(0, 1)
+    grid.buttons['edit'].text = txt('Edit')
+    grid.buttons['delete'].text = txt('Delete')
+    w2ui['users_grid'].render(jQuery('#gridz'))
   })
 </script>
 

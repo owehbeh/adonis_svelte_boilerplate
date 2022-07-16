@@ -36,6 +36,16 @@ Route.group(() => {
   Route.post('/logout', 'AuthController.logout')
 })
 
+/* ---------------------------------- NOTES --------------------------------- */
+Route.group(() => {
+  Route.get('/edit/:id?', 'NotesController.noteEditAddView')
+  Route.post('/edit/:id?', 'NotesController.noteEditAdd')
+  Route.post('/delete/:id?', 'NotesController.noteDelete')
+  Route.get('/', 'NotesController.noteListView')
+  Route.get('/:id', 'NotesController.noteSingleView')
+})
+  .prefix('notes/')
+  .middleware(['auth'])
 /* --------------------------- ORGANIZATION ADMIN --------------------------- */
 Route.group(() => {
   Route.get('/settings', 'AdminController.organizationView')

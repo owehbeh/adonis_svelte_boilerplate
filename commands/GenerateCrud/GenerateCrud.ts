@@ -35,10 +35,11 @@ export default class GenerateCrud extends BaseCommand {
     const myModelProps = myModel.properties
     const myModelName = myModelTitle.toLocaleLowerCase()
     const templatesPath = `commands/GenerateCrud/templates`
-    const listViewTemplateName = `list.svelte`
+    const listViewTemplateName = `listV2.svelte`
     const singleViewTemplateName = `single.svelte`
     const editAddViewTemplateName = `edit_add.svelte`
     const formTextBlockTemplateName = `blocks/form_text_block.svelte`
+    const formDatetimeBlockTemplateName = `blocks/form_datetime_block.svelte`
     const formSelectBlockTemplateName = `blocks/form_select_block.svelte`
     const formMultiSelectBlockTemplateName = `blocks/form_multiselect_block.svelte`
     const formCheckboxBlockTemplateName = `blocks/form_checkbox_block.svelte`
@@ -67,6 +68,7 @@ export default class GenerateCrud extends BaseCommand {
       singleViewTemplateName,
       editAddViewTemplateName,
       formTextBlockTemplateName,
+      formDatetimeBlockTemplateName,
       formSelectBlockTemplateName,
       formMultiSelectBlockTemplateName,
       formCheckboxBlockTemplateName,
@@ -88,7 +90,7 @@ export default class GenerateCrud extends BaseCommand {
     }
     // SECTION LIST VIEW
     // Load template
-    myValues['generatedListViewPath'] = this.generateListView(myValues)
+    myValues['generatedListViewPath'] = this.generateListViewV2(myValues)
     // SECTION SINGLE VIEW
     myValues['generatedSingleViewPath'] = this.generateSingleView(myValues)
     // SECTION EDIT/ADD VIEW
@@ -175,11 +177,12 @@ export default class GenerateCrud extends BaseCommand {
     let editRelationVarsValues = ''
     let editRelationVarsUpdate = ''
     let editRelationVarsCreate = ''
+    let datetimeFix = ''
     Object.keys(val.myModel.properties).forEach((prop) => {
       if (prop === 'id') return
-      const currentProp = val.myModel.properties[prop]
+      const currentProperty = val.myModel.properties[prop]
       const { isNumber, isString, isBoolean, isTypeOfArray, isTypeOfAnyOf } =
-        getPropertyType(currentProp)
+        getPropertyType(currentProperty)
       if (isTypeOfArray || isTypeOfAnyOf) {
         modelRelations += `${prop}:true, `
         relationLists += `relations['${prop}List'] = await prisma.${prop}.findMany()\n`
@@ -194,6 +197,7 @@ export default class GenerateCrud extends BaseCommand {
       } else if (isString || isNumber) {
         editRelationVarsUpdate += `${prop},`
         editRelationVarsCreate += `${prop},`
+        if (currentProperty.format === 'date-time') datetimeFix += `${prop} = new Date(${prop})\n`
       } else if (isBoolean) {
         editRelationVarsUpdate += `${prop}:${prop} ? true : false,`
         editRelationVarsCreate += `${prop}:${prop} ? true : false,`
@@ -219,6 +223,7 @@ export default class GenerateCrud extends BaseCommand {
       edit_relation_vars_update: editRelationVarsUpdate,
       edit_relation_vars_create: editRelationVarsCreate,
       edit_relation_vars_values: editRelationVarsValues,
+      datetime_fix: datetimeFix,
     })
     // Write content to disk
     fs.writeFileSync(
@@ -306,6 +311,62 @@ export default class GenerateCrud extends BaseCommand {
     return generatedListViewPath
   }
 
+  private generateListViewV2(val) {
+    var listViewTemplateFile = fs.readFileSync(
+      `${val.templatesPath}/${val.listViewTemplateName}`,
+      'utf-8'
+    )
+    const listViewTemplateHandlebar = Handlebars.compile(listViewTemplateFile, { noEscape: true })
+    // Build table titles
+    let searches = ''
+    let columns = ''
+    Object.keys(val.myModelProps).forEach((propKey) => {
+      const currentProperty = val.myModelProps[propKey]
+      const propKeyUppercasse = propKey.charAt(0).toUpperCase() + propKey.slice(1)
+      searches += `{ field: '${propKey}', label: txt('${propKeyUppercasse}'), type: 'text' },\n`
+      let valueToSet = ''
+      const { isNumber, isString, isBoolean, isTypeOfArray, isTypeOfAnyOf } =
+        getPropertyType(currentProperty)
+      if (isNumber || isString) {
+        valueToSet += `{ field: '${propKey}', text: txt('${propKeyUppercasse}')`
+        if (currentProperty.format === 'date-time') valueToSet += `, render: 'datetime:mm/dd/yyyy'`
+        valueToSet += `, sortable: true },\n`
+      } else if (isBoolean) {
+        valueToSet = `{ field: '${propKey}', text: txt('${propKeyUppercasse}'), sortable: true, render: 'toggle'  },\n`
+      } else if (isTypeOfArray) {
+        valueToSet = `{ field: '${propKey}.length', text: txt('${propKeyUppercasse}'), sortable: true },\n`
+      } else if (isTypeOfAnyOf) {
+        valueToSet = `
+        {
+          field: '${propKey}.id',
+          text: txt('${propKeyUppercasse}'),
+          render: (ci) => \`<a href='/${propKey}s/\${ci.${propKey}.id}'>\${ci.${propKey}.id}</a>\`,
+        },\n`
+      } else {
+        valueToSet = `{ field: '${propKey}', text: txt('${propKeyUppercasse}'), sortable: true },\n`
+      }
+      columns += valueToSet
+    })
+    // Build table val
+    // Create list content
+    const listViewContent = listViewTemplateHandlebar({
+      model_name_title: val.myModelTitle,
+      model_name: val.myModelName,
+      searches,
+      columns,
+    })
+    // Make sure path sxist
+    ensureExists(`${val.viewsPagesPath}/${val.myModelName}/`)
+    // Write content to disk
+    const generatedListViewPath = `${val.viewsPagesPath}/${val.myModelName}/${val.generatedListViewName}`
+    fs.writeFileSync(generatedListViewPath, listViewContent, { enconding: null }, function (err) {
+      if (err) {
+        return console.log(err)
+      }
+    })
+    return generatedListViewPath
+  }
+
   private generateSingleView(val) {
     // Load single view template file
     var singleViewTemplateFile = fs.readFileSync(
@@ -340,7 +401,9 @@ export default class GenerateCrud extends BaseCommand {
       const { isNumber, isString, isBoolean, isTypeOfArray, isTypeOfAnyOf } =
         getPropertyType(currentProperty)
       if (isNumber || isString) {
-        valueToSet = `{${val.myModelName}.${propKey}}`
+        if (currentProperty.format === 'date-time')
+          valueToSet = `{parseDbDate(${val.myModelName}.${propKey})}`
+        else valueToSet = `{${val.myModelName}.${propKey}}`
       } else if (isBoolean) {
         valueToSet = `{${val.myModelName}.${propKey}}`
       } else if (isTypeOfArray) {
@@ -400,10 +463,16 @@ export default class GenerateCrud extends BaseCommand {
       const { isNumber, isString, isBoolean, isTypeOfArray, isTypeOfAnyOf } =
         getPropertyType(currentProperty)
       if (isNumber || isString) {
-        tempBlockTemplateFile = fs.readFileSync(
-          `${val.templatesPath}/${val.formTextBlockTemplateName}`,
-          'utf-8'
-        )
+        if (currentProperty.format === 'date-time')
+          tempBlockTemplateFile = fs.readFileSync(
+            `${val.templatesPath}/${val.formDatetimeBlockTemplateName}`,
+            'utf-8'
+          )
+        else
+          tempBlockTemplateFile = fs.readFileSync(
+            `${val.templatesPath}/${val.formTextBlockTemplateName}`,
+            'utf-8'
+          )
       } else if (isBoolean) {
         tempBlockTemplateFile = fs.readFileSync(
           `${val.templatesPath}/${val.formCheckboxBlockTemplateName}`,
