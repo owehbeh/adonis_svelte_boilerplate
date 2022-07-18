@@ -4054,12 +4054,12 @@ body[dir="rtl"] .checkbox:checked,
   width: 33.333333%;
 }
 
-.w-1\/2 {
-  width: 50%;
-}
-
 .w-1\/4 {
   width: 25%;
+}
+
+.w-1\/2 {
+  width: 50%;
 }
 
 .max-w-none {
